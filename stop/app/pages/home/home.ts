@@ -22,12 +22,15 @@ export class HomePage implements OnInit {
     // Schedule delayed notification 
 
       LocalNotifications.schedule({
-         text: 'Alarm has expired!',
-         at: new Date(new Date().getTime()),
-         sound: 'file://../../night_owl.mp3',
-         data: { message : 'Time to poop' }
-});
-}
+         title: 'Hey There!',
+         text: 'Time to poop :)',
+         at: new Date(new Date().getTime()+3000),
+         sound: 'file://build/night_owl.mp3',
+         data: { message : 'Time to poop' },
+         every: 'minute'
+   });
+    }
+
 
   hasSit = false;
   hasStool = false;
