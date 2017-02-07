@@ -7,8 +7,8 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding class="mealtimePage">
-	<ion-list>
+<ion-content padding >
+
 
    <h4>When do you prefer to have your first meal?</h4>
 
@@ -38,9 +38,9 @@
 
   <br>
   <ion-item >
-   <button full (click)="saved()">Save</button>
-   <button full (click)="goTo()">Show current mealtimes</button>
+   <button *ngIf="myMealtime1 && myMealtime2" full >Save</button>
+   <button full (click)="goToDetails()">Show current mealtimes</button>
   </ion-item>
-</ion-list>
+
   
 </ion-content>

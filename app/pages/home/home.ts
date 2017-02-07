@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
+import {NavController, NavParams, MenuController} from 'ionic-angular';
 import {BristolPage} from '../bristol/bristol';
 import {LoginPage} from '../login/login';
 import { LocalNotifications } from 'ionic-native';
-import { MenuController } from 'ionic-angular';
 
 declare var firebase: any;
 

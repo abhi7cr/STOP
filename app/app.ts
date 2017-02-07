@@ -7,11 +7,12 @@ import {remindersPage} from './pages/reminders/reminders';
 import {timersPage} from './pages/timers/timers';
 import {aboutPage} from './pages/about/about';
 import {helpPage} from './pages/help/help';
+import {HomePage} from './pages/home/home';
 
 
 @Component({
   //template: '<ion-nav [root]="rootPage"></ion-nav>'
-  templateUrl: 'index.html'
+  templateUrl: '../index.html'
 })
 export class MyApp {
 
@@ -23,7 +24,7 @@ export class MyApp {
     this.rootPage = TabsPage;
 
     this.pages = [
-      { title: 'Home', component: TabsPage },
+      { title: 'Home', component: HomePage },
       { title: 'Set mealtime', component: mealtimePage },
       { title: 'Set reminders', component: remindersPage },
       { title: 'Set timers', component: timersPage }, 

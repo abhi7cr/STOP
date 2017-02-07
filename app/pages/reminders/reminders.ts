@@ -2,14 +2,17 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 @Component({
-  selector: 'page-reminders',
-  templateUrl: 'build/pages/reminders/reminders.html'
+  selector: 'page-reminder',
+  templateUrl: 'build/pages/mealtime/mealtime.html'
 })
+
+
 export class remindersPage {
 
-  constructor(public navCtrl: NavController) {}
+  constructor(public navCtrl: NavController) {
+    this.navCtrl = navCtrl;
 
-  ionViewDidLoad() {
-    console.log('Hello reminders Page');
   }
+
+
 }
