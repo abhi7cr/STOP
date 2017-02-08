@@ -4,7 +4,6 @@
       My Calendar
     </ion-title>
 
-    <!-- <button ion-button menuToggle (click)="openMenu()">Menu</button> -->
     <button type="button" name="button" menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -26,8 +25,11 @@
       <ion-col class="grid ptSans" width-15 *ngFor="let d of displayCurrentMonth | slice:(i*7):(i+1)*7" 
                     [ngStyle]="{'color': d.color, 'background-color': d.bgColor}">  
         <div class="row responsive-md" >
-          <span>{{d.day}}</span>
-          <img *ngIf = "d.url != ''" [src]="d.url" width="20" height="20"/> 
+
+            <h9>{{d.day}}</h9>
+            <img *ngIf = "d.url != ''" [src]="d.url" style="width: 20px; height: 20px;"> 
+            <img src="build/images/more.png" style="width: 10px; height: 10px;" (click)="testMethod();">
+
         </div>
       </ion-col>
      </ion-row>

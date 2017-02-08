@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-navbar>
+    <button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>About this day</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding >
+
+
+   <h4>You have take several activities...</h4>
+
+   <h4>Do you want to manage your activities?</h4>
+      <ion-item (click)="goToMealtime()">Go to manage your mealtime...</ion-item><br>
+      <ion-item (click)="goToReminder()">Go to manage your reminders...</ion-item><br>
+      <ion-item (click)="goToTimer()">Go to manage your timers...</ion-item><br>
+      <ion-item (click)="goToEmoji()">Go to choose your favorite emojis...</ion-item><br>
+
+  
+</ion-content>

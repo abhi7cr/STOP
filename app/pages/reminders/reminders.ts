@@ -1,18 +1,21 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
+import { currentRemindersPage } from '../currentReminders/currentReminders';
 
 @Component({
-  selector: 'page-reminder',
-  templateUrl: 'build/pages/mealtime/mealtime.html'
+  templateUrl: 'build/pages/reminders/reminders.html'
 })
 
 
 export class remindersPage {
 
-  constructor(public navCtrl: NavController) {
+  constructor(private navCtrl: NavController) {
     this.navCtrl = navCtrl;
 
   }
 
+  goToCurrentReminder() {
+    this.navCtrl.push(currentRemindersPage);
+  }
 
 }

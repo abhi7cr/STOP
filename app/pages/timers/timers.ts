@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { currentTimersPage } from '../currentTimers/currentTimers';
 
 @Component({
   selector: 'page-timers',
@@ -7,9 +8,11 @@ import { NavController } from 'ionic-angular';
 })
 export class timersPage {
 
-  constructor(public navCtrl: NavController) {}
+  constructor(public navCtrl: NavController) {
+  	this.navCtrl = navCtrl;
+  }
 
-  ionViewDidLoad() {
-    console.log('Hello timers Page');
+  goToCurrentTimers() {
+    this.navCtrl.push(currentTimersPage);
   }
 }

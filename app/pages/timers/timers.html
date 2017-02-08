@@ -15,29 +15,29 @@
    <ion-item>
 
     <ion-label>Choose start time...</ion-label>
-    <ion-datetime edited="false" displayFormat="hh:mm a" pickerFormat="hh:mm a" [(ngModel)]="mytimerStart1" (ionChange)="setChange()"></ion-datetime>
+    <ion-datetime edited="false" displayFormat="hh:mm a" pickerFormat="hh:mm a" [(ngModel)]="mytimerStart1" ></ion-datetime>
    </ion-item>
    <ion-item>
     <ion-label>Choose end time...</ion-label>
-    <ion-datetime edited="false" displayFormat="hh:mm a" pickerFormat="hh:mm a" [(ngModel)]="mytimerEnd1" (ionChange)="setChange()"></ion-datetime>
+    <ion-datetime edited="false" displayFormat="hh:mm a" pickerFormat="hh:mm a" [(ngModel)]="mytimerEnd1" ></ion-datetime>
   </ion-item>
 
    <h4>How do you prefer to set your next timer?</h4>
 
     <ion-item>
     <ion-label>Choose start time...</ion-label>
-    <ion-datetime edited="false" displayFormat="hh:mm a" pickerFormat="hh:mm a" [(ngModel)]="mytimerStart2" (ionChange)="setChange()"></ion-datetime>
+    <ion-datetime edited="false" displayFormat="hh:mm a" pickerFormat="hh:mm a" [(ngModel)]="mytimerStart2" ></ion-datetime>
   </ion-item>
   <ion-item>
     <ion-label>Choose end time...</ion-label>
-    <ion-datetime edited="false" displayFormat="hh:mm a" pickerFormat="hh:mm a" [(ngModel)]="mytimerEnd2" (ionChange)="setChange()"></ion-datetime>
+    <ion-datetime edited="false" displayFormat="hh:mm a" pickerFormat="hh:mm a" [(ngModel)]="mytimerEnd2" ></ion-datetime>
 
   </ion-item>
 
   <br>
   <ion-item >
    <button *ngIf="mytimerStart1 && mytimerEnd1 && mytimerStart2 && mytimerEnd2" full >Save</button>
-   <button full (click)='goToDetails()'>Show current reminders</button>
+   <button full (click)='goToCurrentTimers()'>Show current timers</button>
   </ion-item>
 
   

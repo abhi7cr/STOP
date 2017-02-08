@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { HomePage } from '../home/home';
+import { currentMealtimePage } from '../currentMealtime/currentMealtime';
 
 @Component({
   templateUrl: 'build/pages/mealtime/mealtime.html'
@@ -15,7 +15,7 @@ export class mealtimePage {
   }
 
   goToDetails() {
-    this.navCtrl.push(HomePage);
+    this.navCtrl.push(currentMealtimePage);
   }
 
 }

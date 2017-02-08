@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import {LoginPage} from '../login/login';
+import {HomePage} from '../home/home';
+import {thisDayPage} from '../thisDay/thisDay';
 // import {Schedule} from 'primeng/primeng';
 import * as moment from 'moment';
 
@@ -304,7 +306,7 @@ export class CalendarPage implements OnInit{
 		var monthName: string = this.mapNumberToDisplayMonth(this.currentMonthInNumber);
 		if(this.today.indexOf(this.currentYear.toString()) != -1 &&
 			this.today.indexOf(monthName) != -1){
-			this.displayCurrentMonth[this.currentDate+this.offset-1].bgColor = 'orange';
+			this.displayCurrentMonth[this.currentDate+this.offset-1].bgColor = '#f17b63';
 		}
 				
 	}
@@ -370,6 +372,10 @@ export class CalendarPage implements OnInit{
     		var ref = firebase.database().ref('logs').orderByChild('uid').equalTo(user.uid);
 			ref.once("value").then(result => this.parseResponse(result));
     	}
+    }
+
+    testMethod() {
+    	this.navController.push(thisDayPage);
     }
 
 }

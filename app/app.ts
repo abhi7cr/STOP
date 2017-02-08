@@ -8,6 +8,7 @@ import {timersPage} from './pages/timers/timers';
 import {aboutPage} from './pages/about/about';
 import {helpPage} from './pages/help/help';
 import {HomePage} from './pages/home/home';
+import { settingEmojiPage } from './pages/settingEmoji/settingEmoji';
 
 
 @Component({
@@ -24,10 +25,11 @@ export class MyApp {
     this.rootPage = TabsPage;
 
     this.pages = [
-      { title: 'Home', component: HomePage },
+      { title: 'Home', component: TabsPage },
       { title: 'Set mealtime', component: mealtimePage },
       { title: 'Set reminders', component: remindersPage },
-      { title: 'Set timers', component: timersPage }, 
+      { title: 'Set timers', component: timersPage },
+      { title: 'Set emojis', component: settingEmojiPage }, 
       { title: 'About app', component: aboutPage },  
       { title: 'Help', component: helpPage },       
     ];
@@ -46,6 +48,7 @@ export class MyApp {
     // navigate to the new page if it is not the current page
     this.nav.setRoot(page.component);
   }
+
 }
 
 ionicBootstrap(MyApp)
