@@ -8,14 +8,13 @@ import { NavController, NavParams, Platform } from 'ionic-angular';
 export class currentMealtimePage {
    platform = null;
    navParams = null;
-   date1:Date = null;
-   date2:Date = null;
+   date1:Date;
+   date2:Date;
      constructor(platform: Platform, navParams: NavParams) {
         this.platform = platform;
         this.navParams = navParams;
         this.date1 = navParams.get("date1");
         this.date2 = navParams.get("date2");
     }
-
   
 }

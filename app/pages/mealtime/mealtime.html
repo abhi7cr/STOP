@@ -15,7 +15,7 @@
    <ion-item>
 
     <ion-label>Choose your first time...</ion-label>
-    <ion-datetime edited="false" displayFormat="hh:mm a" pickerFormat="hh:mm a" [(ngModel)]="myMealtime1" (ionChange)="setChange()"></ion-datetime>
+    <ion-datetime edited="false" displayFormat="hh:mm a" pickerFormat="hh:mm a" [(ngModel)]="myMealtime1"></ion-datetime>
   </ion-item>
 
    <ion-item *ngIf="myMealtime1" text-wrap>
@@ -28,7 +28,7 @@
    <ion-item>
 
     <ion-label>Choose your second time...</ion-label>
-    <ion-datetime edited="false" displayFormat="hh:mm a" pickerFormat="hh:mm a" [(ngModel)]="myMealtime2" (ionChange)="setChange()"></ion-datetime>
+    <ion-datetime edited="false" displayFormat="hh:mm a" pickerFormat="hh:mm a" [(ngModel)]="myMealtime2"></ion-datetime>
   </ion-item>
 
    <ion-item *ngIf="myMealtime2" text-wrap>
@@ -38,7 +38,7 @@
 
   <br>
   <ion-item >
-   <button *ngIf="myMealtime1 && myMealtime2" full >Save</button>
+   <button *ngIf="myMealtime1 && myMealtime2" full (click)="submit()">Submit</button>
    <button full (click)="goToDetails()">Show current mealtimes</button>
   </ion-item>
 
