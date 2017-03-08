@@ -10,8 +10,11 @@ declare var firebase: any;
   templateUrl: 'build/pages/home/home.html'
 })
 export class HomePage implements OnInit {
+
+
   constructor(private navController: NavController, private navParams: NavParams, public menuCtrl: MenuController) {
     //this.user = firebase.auth().currentUser;
+
   }
 
   ngOnInit(){
@@ -34,7 +37,7 @@ export class HomePage implements OnInit {
    });
     }
 
-     openMenu() {
+       openMenu() {
    this.menuCtrl.open();
  }
 
@@ -106,6 +109,7 @@ export class HomePage implements OnInit {
   var updates = {}
   
   updates['/logs/' + key] = {
+    name: this.auth.currentUser.email.split('@')[0].toString(),
     uid: this.auth.currentUser.uid,
     stool: this.stool,
     dose: this.dose,

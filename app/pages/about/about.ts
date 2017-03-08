@@ -10,6 +10,5 @@ export class aboutPage {
   constructor(public navCtrl: NavController) {}
 
   ionViewDidLoad() {
-    console.log('Hello about Page');
   }
 }

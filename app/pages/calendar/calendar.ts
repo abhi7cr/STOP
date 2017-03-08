@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController} from 'ionic-angular';
+import {NavController, Nav, App} from 'ionic-angular';
 import {LoginPage} from '../login/login';
 import {HomePage} from '../home/home';
 import {thisDayPage} from '../thisDay/thisDay';
@@ -8,14 +8,15 @@ import * as moment from 'moment';
 
 declare var firebase: any;
 
+
 @Component({
   templateUrl: 'build/pages/calendar/calendar.html'
 })
 
 export class CalendarPage implements OnInit{
-	
-  constructor(private navController: NavController) {
-  
+
+  constructor(public navController: NavController, private app: App) {
+  	this.navController = navController;
   }
 
   ngOnInit(){
@@ -26,8 +27,8 @@ export class CalendarPage implements OnInit{
     events: any[];
     user: any;
 	posts: any[] = [];
-	smileyUrl = "build/images/Smiley.svg.png";
-	starUrl = "build/images/star.png";
+	Url2:any;
+	Url1:any;
 	rows: any[] = [];
 	d: Date = new Date();
 	currentMonthInNumber = new Date(Date.now()).getMonth();
@@ -42,6 +43,9 @@ export class CalendarPage implements OnInit{
 	displayCurrentMonth: any[] = [];
 	daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 	offset = 0;
+	db:any;
+    ref:any
+    auth = firebase.auth();
 
 	assignDaysOfPrevMonth()
 	{
@@ -314,10 +318,28 @@ export class CalendarPage implements OnInit{
 	updateCalendar()
 	{
 		this.displayCurrentMonth = [];
+		this.updateInfo();
 		this.processPosts();
 		this.assignDaysOfPrevMonth();
 		this.initializeCalendar();
 	}
+
+	updateInfo() {
+      var url1;
+      var url2;
+      this.db = firebase.database();
+      this.ref = this.db.ref('/emojiSetting/'+this.auth.currentUser.email.split('@')[0].toString());
+      this.ref.on('value', function(snapshot){
+        url1 = snapshot.child('url1').val();
+        url2 = snapshot.child('url2').val();
+
+      });
+      this.Url1 = url1;
+      //console.log(this.myMealtime1);
+      this.Url2 = url2;
+
+    }
+
 
 	processPosts()
 	{	
@@ -342,12 +364,12 @@ export class CalendarPage implements OnInit{
 				if(this.posts[i].stool)
 				{
 					this.days[currYear][currMonth][currentDate] = {};
-					this.days[currYear][currMonth][currentDate].url= this.starUrl;
+					this.days[currYear][currMonth][currentDate].url= this.Url1;
 				}		
 				else if(this.posts[i].sit)
 				{
 					this.days[currYear][currMonth][currentDate] = {};
-					this.days[currYear][currMonth][currentDate].url=this.smileyUrl;
+					this.days[currYear][currMonth][currentDate].url=this.Url2;
 				}
 			// }
 		}
@@ -374,8 +396,9 @@ export class CalendarPage implements OnInit{
     	}
     }
 
-    testMethod() {
-    	this.navController.push(thisDayPage);
+    goToMethod() {
+    	//this.navController.push(thisDayPage);
+    	this.app.getRootNav().setRoot(thisDayPage);
     }
 
 }

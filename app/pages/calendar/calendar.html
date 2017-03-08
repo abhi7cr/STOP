@@ -28,7 +28,7 @@
 
             <h9>{{d.day}}</h9>
             <img *ngIf = "d.url != ''" [src]="d.url" style="width: 20px; height: 20px;"> 
-            <img src="build/images/more.png" style="width: 10px; height: 10px;" (click)="testMethod();">
+            <img *ngIf = "d.url != ''" src="build/images/STOP_FINAL.png" style="width: 10px; height: 10px;" (click)="goToMethod()">
 
         </div>
       </ion-col>

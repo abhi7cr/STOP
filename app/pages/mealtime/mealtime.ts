@@ -11,31 +11,62 @@ declare var firebase: any;
 
 export class mealtimePage {
 
-  constructor(private navCtrl: NavController) {
+  constructor(private navCtrl: NavController, navParams: NavParams) {
     this.navCtrl = navCtrl;
 
   }
 
-  myMealtime1: any = null;
-  myMealtime2: any = null;
+  myMealtime1:any=null;
+  myMealtime2:any=null;
+  db:any;
+  ref:any;
+  auth = firebase.auth();
+
 
   goToDetails() {
     this.navCtrl.push(currentMealtimePage, {
-    	date1: myMealtime1,date2: myMealtime2
+    	param1: this.myMealtime1, param2: this.myMealtime2
     	});
 
   }
 
-   submit() {
-    this.db = firebase.database();
-  	var key = this.db.ref().child('logs').push().key;
-  	var updates = {}
-  
-	  updates['/logs/' + key] = {
-	    mealTime1: this.myMealtime1 == null? "":this.myMealtime1,
-	    mealTime2: this.myMealtime2 == null? "":this.myMealtime2
-	  };
+  updateInfo() {
+      var info1;
+      var info2;
+      this.db = firebase.database();
+      this.ref = this.db.ref('/mealtimeSetting/'+this.auth.currentUser.email.split('@')[0].toString());
+      this.ref.on('value', function(snapshot){
+        this.myMealtime1 = info1;
+        this.myMealtime2 = info2;
+        info1 = snapshot.child('mealTime1').val();
+        info2 = snapshot.child('mealTime2').val();
+        alert("mealtime updated successfully!");
+        
 
-	  this.db.ref().update(updates).then(result => this.parseResponse(result)).catch(this.handleError);
-	  }
+      });
   }
+
+  submit2() {
+      this.db = firebase.database();
+      this.db.ref('mealtimeSetting').child(this.auth.currentUser.email.split('@')[0].toString()).set({
+        mealTime1: this.myMealtime1 == null? "":this.myMealtime1,
+        mealTime2: this.myMealtime2 == null? "":this.myMealtime2
+      }).then(result => this.parseResponse(result)).catch(this.handleError);
+
+    }
+
+    parseResponse(response: any)
+  {
+      alert("Your Mealtime has been set!");     
+  }
+
+  handleError(error: any)
+  {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      alert("Error setting mealtime:" + error.message);
+}
+}
+
+
+

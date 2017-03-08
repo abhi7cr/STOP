@@ -19,25 +19,21 @@
 
   <!-- this Ionic's root component and where the app will load -->
   <ion-app>
-    <ion-menu [content]="content">
+<!--     <ion-menu [content]="content">
 
       <ion-content>
         <ion-list>
-        <button ion-item *ngFor="let p of pages" (click)="openPage(p)">
-         {{p.title}}
-        </button>
-          
+          <ion-item *ngfor="let p of pages" (click)="openPage(p)">
+            {{p.title}}
+          </ion-item>          
         </ion-list>
       </ion-content>
 
     </ion-menu>
 
-    <ion-nav #content swipe-back-enabled="false" [root]='rootPage'></ion-nav>
+    <ion-nav #content="" swipe-back-enabled="false" [root]="rootPage"></ion-nav> -->
 
   </ion-app>
-
-  <!-- —add more libraries -->
-  <script src="lib/ngstorage/ngStorage.min.js"></script>
 
   <!-- cordova.js required for cordova apps -->
   <script src="cordova.js"></script>

@@ -15,7 +15,7 @@
    <ion-item>
 
     <ion-label>Choose your first time...</ion-label>
-    <ion-datetime edited="false" displayFormat="hh:mm a" pickerFormat="hh:mm a" [(ngModel)]="myReminder1" ></ion-datetime>
+    <ion-datetime edited="false" displayFormat="hh:mm a" pickerFormat="hh:mm a" [(ngModel)]="myReminder1" (ionChange)="timeChange($event)"></ion-datetime>
   </ion-item>
 
    <ion-item *ngIf="myReminder1" text-wrap>
@@ -38,9 +38,13 @@
 
   <br>
   <ion-item >
-   <button *ngIf="myReminder1 && myReminder2" full >Save</button>
+   <button *ngIf="myReminder1 && myReminder2" full (click)="submit()">Save</button>
    <button full (click)="goToCurrentReminder()">Show current mealtimes</button>
+   <button full (click)="updateInfo()">Updates</button>
   </ion-item>
 
   
 </ion-content>
+
+  <!-- cordova.js required for cordova apps -->
+  <script src="cordova.js"></script>

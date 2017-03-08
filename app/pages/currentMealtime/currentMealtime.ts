@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, Platform } from 'ionic-angular';
 
+declare var firebase: any;
+
 @Component({
   selector: 'page-currentMealtime',
   templateUrl: 'build/pages/currentMealtime/currentMealtime.html'
@@ -8,13 +10,19 @@ import { NavController, NavParams, Platform } from 'ionic-angular';
 export class currentMealtimePage {
    platform = null;
    navParams = null;
-   date1:Date;
-   date2:Date;
+   updateDate1:any;
+   updateDate2:any;
+   db:any;
+   auth = firebase.auth();
+   ref:any;
+
      constructor(platform: Platform, navParams: NavParams) {
         this.platform = platform;
         this.navParams = navParams;
-        this.date1 = navParams.get("date1");
-        this.date2 = navParams.get("date2");
+        this.updateDate1 = navParams.get("param1");
+        this.updateDate2 = navParams.get("param2");
+
     }
+
   
 }
