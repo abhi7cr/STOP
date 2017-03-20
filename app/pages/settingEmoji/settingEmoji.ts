@@ -60,7 +60,7 @@ export class settingEmojiPage {
 
     submit() {
       this.db = firebase.database();
-      this.db.ref('emojiSetting').child(this.auth.currentUser.email.split('@')[0].toString()).set({
+      this.db.ref('emojiSetting').child(this.auth.currentUser.uid).set({
         url1: this.url1 == null? "":this.url1,
         url2: this.url2 == null? "":this.url2
       }).then(result => this.parseResponse(result)).catch(this.handleError);

@@ -4,7 +4,7 @@ import {StatusBar, Splashscreen} from 'ionic-native';
 import {TabsPage} from './pages/tabs/tabs';
 import {mealtimePage} from './pages/mealtime/mealtime';
 import {remindersPage} from './pages/reminders/reminders';
-import {timersPage} from './pages/timers/timers';
+import {TimerComponent} from './pages/timers/timers';
 import {aboutPage} from './pages/about/about';
 import {helpPage} from './pages/help/help';
 import {HomePage} from './pages/home/home';
@@ -32,7 +32,7 @@ export class MyApp {
       { title: 'Home', component: TabsPage },
       { title: 'Set mealtime', component: mealtimePage },
       { title: 'Set reminders', component: remindersPage },
-      { title: 'Set timers', component: timersPage },
+      { title: 'Set timers', component: TimerComponent },
       { title: 'Set emojis', component: settingEmojiPage }, 
       { title: 'About app', component: aboutPage },  
       { title: 'Help', component: helpPage } 

@@ -50,7 +50,7 @@ export class remindersPage {
       var info1;
       var info2;
       this.db = firebase.database();
-      this.ref = this.db.ref('/reminderSetting/'+this.auth.currentUser.email.split('@')[0].toString());
+      this.ref = this.db.ref('/reminderSetting/'+this.auth.currentUser.uid);
       this.ref.on('value', function(snapshot){
         info1 = snapshot.child('reminder1').val();
         info2 = snapshot.child('reminder2').val();
@@ -97,7 +97,7 @@ export class remindersPage {
 
   submit() {
       this.db = firebase.database();
-      this.db.ref('reminderSetting').child(this.auth.currentUser.email.split('@')[0].toString()).set({
+      this.db.ref('reminderSetting').child(this.auth.currentUser.uid).set({
         reminder1: this.myReminder1 == null? "":this.myReminder1,
         reminder2: this.myReminder2 == null? "":this.myReminder2
       }).then(result => this.parseResponse(result)).catch(this.handleError);

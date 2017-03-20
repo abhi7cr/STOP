@@ -34,7 +34,7 @@ export class mealtimePage {
       var info1;
       var info2;
       this.db = firebase.database();
-      this.ref = this.db.ref('/mealtimeSetting/'+this.auth.currentUser.email.split('@')[0].toString());
+      this.ref = this.db.ref('/mealtimeSetting/'+this.auth.currentUser.uid);
       this.ref.on('value', function(snapshot){
         this.myMealtime1 = info1;
         this.myMealtime2 = info2;
@@ -48,7 +48,7 @@ export class mealtimePage {
 
   submit2() {
       this.db = firebase.database();
-      this.db.ref('mealtimeSetting').child(this.auth.currentUser.email.split('@')[0].toString()).set({
+      this.db.ref('mealtimeSetting').child(this.auth.currentUser.uid).set({
         mealTime1: this.myMealtime1 == null? "":this.myMealtime1,
         mealTime2: this.myMealtime2 == null? "":this.myMealtime2
       }).then(result => this.parseResponse(result)).catch(this.handleError);

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import {mealtimePage} from '../mealtime/mealtime';
 import { remindersPage } from '../reminders/reminders';
-import { timersPage } from '../timers/timers';
+import { TimerPage } from '../timers/timer';
 import { settingEmojiPage } from '../settingEmoji/settingEmoji';
 
 declare var firebase: any;
@@ -31,7 +31,7 @@ export class thisDayPage {
     this.navCtrl.push(remindersPage);
   }
   goToTimer() {
-    this.navCtrl.push(timersPage);
+    this.navCtrl.push(TimerPage);
   }
   goToEmoji() {
     this.navCtrl.push(settingEmojiPage);
@@ -85,7 +85,7 @@ export class thisDayPage {
       {
         var user = firebase.auth().currentUser;
         var ref = firebase.database().ref('logs').orderByChild('uid').equalTo(user.uid);
-      ref.once("value").then(result => this.parseResponse(result));
+        ref.once("value").then(result => this.parseResponse(result));
       }
     }
 

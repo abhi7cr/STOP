@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-navbar>
+    <button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Set timers</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+<ion-list>
+      <ion-item>
+        <ion-label>Set Timer (in minutes)</ion-label>
+        <ion-select [(ngModel)]="timeInSeconds" (ngModelChange)="updateTimer()">
+          <ion-option value="60">1</ion-option>
+          <ion-option value="120">2</ion-option>
+          <ion-option value="180">3</ion-option>
+          <ion-option value="240">4</ion-option>
+          <ion-option value="300">5</ion-option>
+          <ion-option value="360">6</ion-option>
+          <ion-option value="420">7</ion-option>
+          <ion-option value="480">8</ion-option>
+          <ion-option value="540">9</ion-option>
+          <ion-option value="600">10</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+<ion-card *ngIf="timer">
+<ion-item class="no-bottom-border item">
+<button ion-button *ngIf="timeInSeconds" large full clear class="timer-button">{{timer.displayTime}}</button>
+</ion-item>
+<ion-item class="no-bottom-border" *ngIf="timeInSeconds">
+<button ion-button icon-left clear color="danger" small (click)="initTimer()" item-left *ngIf="!timer.runTimer && (timer.hasStarted || timer.hasFinished) || timer.hasFinished">
+<ion-icon name="refresh"></ion-icon>
+Reset
+</button>
+<button ion-button icon-left clear small color="primary" (click)="pauseTimer()" item-right *ngIf="timer.runTimer && timer.hasStarted && !timer.hasFinished">
+<ion-icon name="pause"></ion-icon>
+Pause
+</button>
+<button ion-button icon-left clear small color="primary" (click)="resumeTimer()" item-right *ngIf="!timer.runTimer && timer.hasStarted && !timer.hasFinished">
+<ion-icon name="play"></ion-icon>
+Resume
+</button>
+<button ion-button icon-left clear small color="primary" (click)="startTimer()" item-right *ngIf="!timer.hasStarted">
+<ion-icon name="play"></ion-icon>
+Start
+</button>
+</ion-item>
+</ion-card>
+</ion-content>
