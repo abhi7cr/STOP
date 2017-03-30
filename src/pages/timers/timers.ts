@@ -3,12 +3,13 @@ import {ITimer} from './itimer';
 
 
 @Component({
-    selector: 'timer',
+    selector: 'stopTimer',
     templateUrl: 'timer.html'
 })
 export class TimerComponent implements AfterViewInit {
 
     @Input() timeInSeconds: number;
+    @Input() test: string;
     public timer: ITimer;
 
     constructor(

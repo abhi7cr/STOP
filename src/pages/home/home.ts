@@ -23,6 +23,7 @@ export class HomePage implements OnInit {
       this.authState = auth$.getAuth();
     auth$.subscribe((state: FirebaseAuthState) => {
       this.authState = state;
+      
     });
   }
 

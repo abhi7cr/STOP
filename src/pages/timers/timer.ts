@@ -7,5 +7,5 @@ import {ITimer} from './itimer';
 })
 export class TimerPage 
 {
-
+	defaultTimeInSeconds: Number = 300;
 }
