@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-navbar>
+    <button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Choose your favorite emoji!</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding >
+
+
+  <h4>Which one do you prefer for your reward on calender?</h4>
+
+  <input id="1-1" checked="checked" type="radio" name="select1">
+  <img style="width: 40px; height: 40px;" src="../assets/images/star.png">
+  <input id="1-2" checked="checked" type="radio" name="select1">
+  <img style="width: 40px; height: 40px;" src="../assets/images/star.png">
+  <input id="1-3" checked="checked" type="radio" name="select1">
+  <img style="width: 40px; height: 40px;" src="../assets/images/star.png">
+    
+
+ 
+
+  <h4>If you cannot make it to get your reward icon, then you coudl choose one of the following icons to mark that day!</h4>
+
+  <input id="2-1" checked="checked" type="radio" name="select2">
+  <img style="width: 40px; height: 40px;" src="../assets/images/Smiley.svg.png">
+  <input id="2-2" checked="checked" type="radio" name="select2">
+  <img style="width: 40px; height: 40px;" src="../assets/images/Smiley.svg.png">
+  <input id="2-3" checked="checked" type="radio" name="select2">
+  <img style="width: 40px; height: 40px;" src="../assets/images/Smiley.svg.png">
+
+
+
+
+  <br>
+  <ion-item >
+   <button full (click)="infoWin()">save your changes</button>
+   <button full (click)="submit()">submit</button>
+  </ion-item>
+
+  
+</ion-content>

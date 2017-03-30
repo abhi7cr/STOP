@@ -30,7 +30,7 @@
   <preference name="SplashShowOnlyFirstTime" value="false"/>
   <preference name="FadeSplashScreen" value="false"/>
   <feature name="SplashScreen">
-      <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen"/>
+    <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen"/>
   </feature>
   <feature name="StatusBar">
     <param name="ios-package" onload="true" value="CDVStatusBar"/>
@@ -44,4 +44,5 @@
   <plugin name="cordova-plugin-inappbrowser" spec="~1.1.0"/>
   <plugin name="cordova-plugin-wkwebview-engine" spec="~1.0.3"/>
   <allow-navigation href="http://10.0.0.135:8100"/>
+  <allow-navigation href="http://10.0.0.20:8100"/>
 </widget>
