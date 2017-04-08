@@ -23,29 +23,27 @@ export class HomePage implements OnInit {
       this.authState = auth$.getAuth();
     auth$.subscribe((state: FirebaseAuthState) => {
       this.authState = state;
-      
+   
+    if(this.authState === undefined || this.authState === null){
+           this.navController.setRoot(LoginPage); 
+    }
     });
   }
 
   ngOnInit(){
-
-    if(this.authState === undefined || this.authState === null){
-         this.navController.push(LoginPage); 
-    }
-
    
    
 
     // Schedule delayed notification 
 
-      LocalNotifications.schedule({
-         title: 'Hey There!',
-         text: 'Time to poop :)',
-         at: new Date(new Date().getTime()+3000),
-         sound: 'file://night_owl.mp3',
-         data: { message : 'Time to poop' }
-         //every: 'minute'
-   });
+   //    LocalNotifications.schedule({
+   //       title: 'Hey There!',
+   //       text: 'Time to poop :)',
+   //       at: new Date(new Date().getTime()+3000),
+   //       sound: 'file://night_owl.mp3',
+   //       data: { message : 'Time to poop' }
+   //       //every: 'minute'
+   // });
     }
 
        openMenu() {
@@ -68,9 +66,10 @@ export class HomePage implements OnInit {
   user: any;
 
   logout(){
-    this.firebase.auth.logout().then(response => {
-  // Sign-out successful.
-     this.navController.push(LoginPage);  
+  
+    this.firebase.auth.logout().then((response) => {
+          //this.navController.setRoot(LoginPage);
+            //this.auth$.unsubscribe();
     });
   }
 
@@ -116,7 +115,8 @@ export class HomePage implements OnInit {
       // Get a reference to the storage service, which is used to create references in your storage bucket
   this.db = this.firebase.database;
   var currentDate = new Date().getTime();
-  var key = this.db.object('logs').set({
+  var ref = this.db.list('/logs/'+this.authState.uid);
+  ref.push({
     name: this.authState.auth.email.split('@')[0].toString(),
     uid: this.authState.uid,
     stool: this.stool,
@@ -135,14 +135,15 @@ export class HomePage implements OnInit {
   }
 
   ionViewDidEnter(){
-    if(this.auth !== null){
+    if(this.authState !== null && this.authState.auth !== null){
        this.titleText = "Welcome "+ this.authState.auth.email.split('@')[0].toString();
   }
 }
 
   setCurrentDateTime(){
     var date = new Date();
-    this.myDate = date.getHours() +":"+ date.getMinutes();
+    let _myDate = date.getHours() +":"+ date.getMinutes();
+    this.myDate = _myDate;
     //alert(this.myDate);
   }
 }

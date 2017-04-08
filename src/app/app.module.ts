@@ -21,6 +21,7 @@ import {currentRemindersPage} from '../pages/currentReminders/currentReminders';
 import {currentTimersPage} from '../pages/currentTimers/currentTimers';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import {ThisDayPage} from '../pages/thisDay/thisDay';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyCBvKIztKx4W1oSJ0Eti8aVljxEmMzNlII",
@@ -43,7 +44,8 @@ export const firebaseConfig = {
     BristolPage,
     CalendarPage,
     LoginPage,
-    TimerPage
+    TimerPage,
+    ThisDayPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -66,7 +68,8 @@ export const firebaseConfig = {
     BristolPage,
     CalendarPage,
     TimerPage,
-    LoginPage
+    LoginPage,
+    ThisDayPage
   ],
   providers: [
     StatusBar,

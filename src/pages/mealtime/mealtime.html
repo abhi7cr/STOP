@@ -1,13 +1,13 @@
 <ion-header>
   <ion-navbar>
-    <button menuToggle>
+   <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Set mealtime</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding >
+<ion-content padding class="mealTime">
 
 
    <h4>When do you prefer to have your first meal?</h4>
@@ -38,8 +38,8 @@
 
   <br>
   <ion-item >
-   <button *ngIf="myMealtime1 && myMealtime2" full (click)="submit2()">Save</button>
-   <button full (click)="goToDetails()">Show current mealtimes</button>
+   <button ion-button color="secondary" *ngIf="myMealtime1 && myMealtime2" full (click)="submit2()">Save</button>
+ <!--   <button full (click)="goToDetails()">Show current mealtimes</button> -->
    <!-- <button full (click)="updateInfo()">Update</button> -->
   </ion-item>
 

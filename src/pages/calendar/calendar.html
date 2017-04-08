@@ -1,19 +1,18 @@
 <ion-header>
   <ion-navbar>
+  <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title class="ptSans">
       My Calendar
     </ion-title>
-
-    <button type="button" name="button" menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding class="calendar">
     <h4><span class="ptSans">{{currentMonth}}, {{currentYear}}</span></h4>
-    <button (click)="goToPreviousMonth()"><ion-icon name="arrow-back"></ion-icon> </button>
-    <button (click)="goToNextMonth()"><ion-icon name="arrow-forward"></ion-icon> </button>
+    <button ion-button (click)="goToPreviousMonth()"><ion-icon name="arrow-back"></ion-icon> </button>
+    <button ion-button (click)="goToNextMonth()"><ion-icon name="arrow-forward"></ion-icon> </button>
    <!--  <button (click)="clear()">Clear</button> -->
     <br/>
     <ion-row>
@@ -25,10 +24,27 @@
       <ion-col class="grid ptSans" width-15 *ngFor="let d of displayCurrentMonth | slice:(i*7):(i+1)*7" 
                     [ngStyle]="{'color': d.color, 'background-color': d.bgColor}">  
         <div class="row responsive-md" >
-
-            <h5>{{d.day}}</h5>
-            <img *ngIf = "d.url != ''" [src]="d.url" style="width: 20px; height: 20px;"> 
-            <img *ngIf = "d.url != ''" src="../assets/images/STOP_FINAL.png" style="width: 10px; height: 10px;" (click)="goToMethod()">
+                
+          <h5 style="float:left">{{d.day}}</h5>
+          <ion-row *ngIf = "d.url1 != '' || d.url2 != ''">
+            <ion-col class="dayGrid">
+              <div *ngIf = "d.url1 != ''" style="float:left">
+            <label for="url1">Morning:</label>
+            <img id="url1" [src]="d.url1" style="width: 25px; height: 25px;"/>
+            </div>
+            </ion-col>
+            <ion-col class="dayGrid">
+              <div style="float:left" *ngIf = "d.url2 != ''">
+                <label for="url2">Evening:</label>
+                <img id="url2" [src]="d.url2" style="width: 25px; height: 25px;"/>
+              </div>
+            </ion-col>
+            <ion-col class="dayGrid">
+              <div style="float: left" *ngIf = "d.url1 != '' || d.url2 != ''">
+                <a style="cursor:pointer;float:left"  style="width: 20px; height: 20px;" (click)="goToMethod(d)">View Activity</a>
+              </div>
+            </ion-col>
+          </ion-row>
 
         </div>
       </ion-col>

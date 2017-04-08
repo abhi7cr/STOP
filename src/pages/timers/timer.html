@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <button menuToggle>
+    <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Set timers</ion-title>
@@ -37,6 +37,10 @@ Reset
 <ion-icon name="pause"></ion-icon>
 Pause
 </button>
+<button ion-button icon-left clear small color="danger" (click)="stopTimer()" item-right *ngIf="timer.runTimer && timer.hasStarted && !timer.hasFinished">
+<ion-icon name="stop"></ion-icon>
+Stop
+</button>
 <button ion-button icon-left clear small color="primary" (click)="resumeTimer()" item-right *ngIf="!timer.runTimer && timer.hasStarted && !timer.hasFinished">
 <ion-icon name="play"></ion-icon>
 Resume
@@ -47,4 +51,10 @@ Start
 </button>
 </ion-item>
 </ion-card>
+ <ion-item >
+   <label>Time to save (seconds): {{timeToSave}}</label>
+  </ion-item>
+ <ion-item >
+   <button ion-button color="secondary" full (click)="submit()">submit</button>
+  </ion-item>
 </ion-content>

@@ -1,15 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import {mealtimePage} from '../mealtime/mealtime';
 import { remindersPage } from '../reminders/reminders';
 import { TimerPage } from '../timers/timer';
 import { settingEmojiPage } from '../settingEmoji/settingEmoji';
-import {AngularFire} from 'angularfire2';
+import {AuthProviders, AngularFireAuth, AngularFire, FirebaseAuthState, AuthMethods} from 'angularfire2';
+
 
 @Component({
   templateUrl: 'thisDay.html'
 })
-export class thisDayPage {
+export class ThisDayPage implements OnInit {
 
   db:any;
   auth = this.firebase.auth.getAuth().auth;
@@ -17,29 +18,39 @@ export class thisDayPage {
   message1:any;
   message2:any;
   message3:any;
+  date: string;
+  private authState: FirebaseAuthState;
+  constructor(private navController: NavController,
+            private firebase: AngularFire,
+            public auth$: AngularFireAuth,
+            private navParams: NavParams) {
+    //this.initApp();
+    this.authState = auth$.getAuth();
+    auth$.subscribe((state: FirebaseAuthState) => {
+      this.authState = state;
+    //   if(this.authState === null || this.authState === undefined)
+    //     //this.navController.push(LoginPage);
+    });
+  }
 
-  constructor(public navCtrl: NavController,
-         private navParams: NavParams,
-         private firebase: AngularFire
-         ) {
-  	this.navCtrl = navCtrl;
+  ngOnInit(){
   }
 
   goToMealtime() {
-    this.navCtrl.push(mealtimePage);
+    this.navController.push(mealtimePage);
   }
   goToReminder() {
-    this.navCtrl.push(remindersPage);
+    this.navController.push(remindersPage);
   }
   goToTimer() {
-    this.navCtrl.push(TimerPage);
+    this.navController.push(TimerPage);
   }
   goToEmoji() {
-    this.navCtrl.push(settingEmojiPage);
+    this.navController.push(settingEmojiPage);
   }
 
   viewActivity() {
-    var currentUser = this.firebase.auth.getAuth().auth;
+    var currentUser = this.authState.auth.uid;
     var str1='';
     var str2=''; 
     var str3='';
@@ -63,32 +74,37 @@ export class thisDayPage {
       
     }
     this.message1 = str1;
-    console.log(str1);
     this.message2 = str2;
-    console.log(str2);
     this.message3 = str3;
-    console.log(str3);
   }
 
   parseResponse(response)
   {   
-    this.posts = response.val();
-
+    this.posts = response;
+    this.viewActivity();
   }
 
   ionViewWillEnter(){
-      this.fetchLogs();
+      this.date =  this.navParams.get("param1").date;
+      let timeInMilliseconds = new Date(Number(this.date.split('-')[0]),
+                                        Number(this.date.split('-')[1]),
+                                        Number(this.date.split('-')[2]));
+      this.fetchLogs(timeInMilliseconds.valueOf());
   }
 
-  fetchLogs() {
-
-      if(this.firebase.auth.getAuth().auth != null)
-      {
-        var uid = this.firebase.auth.getAuth().uid;
-        var ref = this.firebase.database.list('logs', {query:{
-                    orderByChild: uid}});
-        ref.subscribe(result => this.parseResponse(result));
-      }
+  fetchLogs(ms: number) {  
+        var uid = this.authState.auth.uid;
+        let oneDayInMs:number = 3600*1000*24;
+        let nextDayinMs:number = ms + oneDayInMs;
+        var ref = this.firebase.database.list('logs/'+ uid, 
+          { 
+            query: {
+            orderByChild: 'date',
+            startAt: ms,
+            endAt: nextDayinMs
+          }
+        });
+        ref.subscribe(result => this.parseResponse(result));    
     }
 
 }

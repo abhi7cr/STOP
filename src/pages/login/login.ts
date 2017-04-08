@@ -29,7 +29,7 @@ export class LoginPage implements OnInit {
   
     parseResponse(response: any)
 	  {
-           this.navController.pop();
+           this.navController.setRoot(HomePage);
 	  } 
 
 	handleError(error: any)
@@ -46,16 +46,10 @@ export class LoginPage implements OnInit {
     }
 
 	 toggleSignIn() {
-      if (!this.firebase.auth) {
         this.firebase.auth.login({email: this.email, password:this.password}).then(result => this.parseResponse(result))
         .catch(this.handleError);
-        // [END authwithemail]
       }
-      else{
-      	this.user = this.authState.auth;
-    	  this.navController.pop();
-      }
-    }
+    
 
     ionViewWillEnter(){
 			// if (firebase.auth().currentUser) {

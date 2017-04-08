@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {NavController, Nav, App} from 'ionic-angular';
 import {LoginPage} from '../login/login';
 import {HomePage} from '../home/home';
-import {thisDayPage} from '../thisDay/thisDay';
+import {ThisDayPage} from '../thisDay/thisDay';
 // import {Schedule} from 'primeng/primeng';
 import * as moment from 'moment';
-import {AngularFire} from 'angularfire2';
+import {AuthProviders, AngularFireAuth, AngularFire, FirebaseAuthState, AuthMethods} from 'angularfire2';
 
 //declare var firebase: any;
 
@@ -16,15 +16,22 @@ import {AngularFire} from 'angularfire2';
 
 export class CalendarPage implements OnInit{
 
-  constructor(public navController: NavController, 
-  	private app: App,
-  	private firebase: AngularFire) {
-  	this.navController = navController;
+ private authState: FirebaseAuthState;
+  constructor(private navController: NavController,
+            private firebase: AngularFire,
+            public auth$: AngularFireAuth) {
+  	//this.initApp();
+    this.authState = auth$.getAuth();
+    auth$.subscribe((state: FirebaseAuthState) => {
+      this.authState = state;
+      if(this.authState === null || this.authState === undefined)
+      	this.navController.push(LoginPage);
+    });
   }
 
   ngOnInit(){
-  	 if(this.firebase.auth === null || this.firebase.auth === undefined){
-         this.navController.push(LoginPage); 
+  	 if(this.authState === null || this.authState === undefined){
+         this.navController.setRoot(LoginPage); 
     }
   }
     events: any[];
@@ -79,7 +86,8 @@ export class CalendarPage implements OnInit{
  			else{
  				this.displayCurrentMonth.push({
  											   day: this.mapNumberToDisplayMonth(prevMonthId) + " " + i,
- 											   url: "",
+ 											   url1: "",
+ 											   url2: "",
  											   color: 'gray',
  											   bgColor: 'white'});
  				}
@@ -264,17 +272,26 @@ export class CalendarPage implements OnInit{
 		for(var l=1; l<=this.getNoOfDays(currentMonth); l++){
 			var curYear = this.days[this.currentYear];
 			var bgColor  = 'white';
+			var fgColor  = 'gray';
 			if(curYear != null && 
 				curYear[currentMonth] != null && 
 				curYear[currentMonth][l] != null){
+
 				this.displayCurrentMonth.push({
-												url:curYear[currentMonth][l].url,
+												url1:curYear[currentMonth][l].url1,
+												url2:curYear[currentMonth][l].url2,
 												day:l,
-												color: 'black',
-											    bgColor: bgColor});
+												color: fgColor,
+											    bgColor: bgColor,
+											    date: this.currentYear + "-" + currentMonth + "-" + l});
 			}
 			else{
-					this.displayCurrentMonth.push({day: l, url: "", color: 'black', bgColor: bgColor});
+					this.displayCurrentMonth.push({day: l,
+												   url1: "",
+												   url2: "",
+												   color: fgColor,
+												   bgColor: bgColor,
+												   date: ''});
 				}
 				
 			}
@@ -290,21 +307,22 @@ export class CalendarPage implements OnInit{
 
 			var i = 1;
 			for(l; l<= 42; l++){
-				var url = "";
+				var url1 = "";
+				var url2 = "";
 				var curYear = this.days[curYearId];
 				if(curYear != null && curYear[curMonthId] != null && 
 							curYear[curMonthId][i] != null){
-					url = curYear[curMonthId][i].url;
+					url1 = curYear[curMonthId][i].url1;
+					url2 = curYear[curMonthId][i].url2;
 				}
-
-				if(url !== null)
-					//alert(url);
 
 				this.displayCurrentMonth.push({
 												day: this.mapNumberToDisplayMonth(curMonthId) + " " + i, 
-												url: url,
+												url1: url1,
+												url2: url2,
 												color: 'gray',
-												bgColor: 'white'
+												bgColor: 'white',
+												date: curYearId + "-" + curMonthId + "-" + i,
 												});
 				i++;
 			}
@@ -312,7 +330,7 @@ export class CalendarPage implements OnInit{
 		var monthName: string = this.mapNumberToDisplayMonth(this.currentMonthInNumber);
 		if(this.today.indexOf(this.currentYear.toString()) != -1 &&
 			this.today.indexOf(monthName) != -1){
-			this.displayCurrentMonth[this.currentDate+this.offset-1].bgColor = '#f17b63';
+			this.displayCurrentMonth[this.currentDate+this.offset-1].color = '#f17b63';
 		}
 				
 	}
@@ -321,25 +339,28 @@ export class CalendarPage implements OnInit{
 	{
 		this.displayCurrentMonth = [];
 		this.updateInfo();
-		this.processPosts();
-		this.assignDaysOfPrevMonth();
-		this.initializeCalendar();
+		// this.processPosts();
+		
 	}
 
 	updateInfo() {
-      var url1;
-      var url2;
       this.db = this.firebase.database;
-      this.ref = this.db.object('/emojiSetting/'+this.firebase.auth.getAuth().uid, { preserveSnapshot: true });
+      this.ref = this.db.object('/emojiSetting/'+this.authState.auth.uid, { preserveSnapshot: true });
       this.ref.subscribe(snapshot => {
-        url1 = snapshot.child('url1').val();
-        url2 = snapshot.child('url2').val();
+      this.Url1 = snapshot.child('url1').val();
+      this.Url2 = snapshot.child('url2').val();
 
+      if(this.Url1 === undefined || this.Url1 === null)
+      	this.Url1 = "assets/images/poop_2.png";
+
+       if(this.Url2 === undefined || this.Url2 === null)
+      	this.Url2 = "assets/images/poop_3.png";
+
+      this.processPosts();
+      this.assignDaysOfPrevMonth();
+	  this.initializeCalendar();
       });
-      this.Url1 = url1;
-      //console.log(this.myMealtime1);
-      this.Url2 = url2;
-
+     
     }
 
 
@@ -356,23 +377,37 @@ export class CalendarPage implements OnInit{
 				var currYear = date.getFullYear();
 				this.d = date;
 			// if(date.getFullYear() == this.currentYear)
-				if(this.days[currYear] == null){
+				if( this.days[currYear] == undefined || 
+					this.days[currYear] == null){
 					this.days[currYear] = [];
 				}
-				if(this.days[currYear][currMonth] == null){
+				if(this.days[currYear][currMonth] === undefined ||
+					this.days[currYear][currMonth] === null){
 					this.days[currYear][currMonth] = [];
 				}
-				if(this.posts[i].stool)
-				{
+				if(this.days[currYear][currMonth][currentDate] === undefined || 
+					this.days[currYear][currMonth][currentDate] === null ){
 					this.days[currYear][currMonth][currentDate] = {};
-					this.days[currYear][currMonth][currentDate].url= this.Url1;
-				}		
-				else if(this.posts[i].sit)
-				{
-					this.days[currYear][currMonth][currentDate] = {};
-					this.days[currYear][currMonth][currentDate].url=this.Url2;
+					this.days[currYear][currMonth][currentDate].url1 = '';
+					this.days[currYear][currMonth][currentDate].url2 = '';
 				}
-			// }
+				
+				//Morning
+				if(this.posts[i].time.split(":")[0] <= 12)
+				{
+					if(this.posts[i].stool)								
+						this.days[currYear][currMonth][currentDate].url1= this.Url1;								
+					else if(this.posts[i].sit)
+					    this.days[currYear][currMonth][currentDate].url1= this.Url2;				
+				}
+				//Evening		
+				else if(this.posts[i].time.split(":")[0] > 12)
+				{
+					if(this.posts[i].stool)		
+						this.days[currYear][currMonth][currentDate].url2= this.Url1;				
+					else if(this.posts[i].sit)
+						this.days[currYear][currMonth][currentDate].url2=this.Url2;			
+				}
 		}
 	}
 
@@ -380,7 +415,6 @@ export class CalendarPage implements OnInit{
 	{		
 		this.posts = response;
 		this.updateCalendar();
-
 	}
 
 	ionViewWillEnter(){
@@ -391,16 +425,15 @@ export class CalendarPage implements OnInit{
 
     	if(this.firebase.auth != null)
     	{
-    		var uid = this.firebase.auth.getAuth().uid;
-    		var ref = this.firebase.database.list('logs', {query: {
-    			orderByChild: 'uid',equalTo: uid}});
+    		var uid = this.authState.auth.uid;
+    		var ref = this.firebase.database.list('logs/'+uid);
 			ref.subscribe(result => this.parseResponse(result));
     	}
     }
 
-    goToMethod() {
-    	//this.navController.push(thisDayPage);
-    	this.app.getRootNav().setRoot(thisDayPage);
+    goToMethod(day: any) {
+    	this.navController.push(ThisDayPage, {param1: day});
+    	//this.app.getRootNav().setRoot(thisDayPage);
     }
 
 }

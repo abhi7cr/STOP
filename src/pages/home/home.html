@@ -1,12 +1,12 @@
 <ion-header>
   <ion-navbar>
-    <ion-title class="ptSans">{{titleText}}</ion-title>
-    <ion-buttons end>  
-    <button small (click)="logout()">Logout</button>
-    </ion-buttons>
-    <button type="button" name="button" menuToggle>
+  <button ion-button name="button" menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
+    <ion-title class="ptSans">{{titleText}}</ion-title>
+    <ion-buttons end>  
+    <button ion-button small (click)="logout()">Logout</button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -70,6 +70,6 @@
   </div>
   <br/>
 
-  <button ion-button color="secondary" full (click)="submit()">Submit</button>
+  <button [disabled]="myDate === null" ion-button color="secondary" full (click)="submit()">Submit</button>
 
 </ion-content>

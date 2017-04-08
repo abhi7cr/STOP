@@ -1,17 +1,17 @@
 <ion-header>
   <ion-navbar>
-    <button menuToggle>
+   <button ion-button name="button" menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>About this day</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding >
+<ion-content padding class="thisDay">
 
 
    <h4>You have take several activities...</h4>
-   <button full (click)="viewActivity()">Updates</button>
+  <!--  <button ion-button color="secondary" full (click)="viewActivity()">View Activity</button> -->
    <h6>{{message1}}</h6>
    <h6>{{message2}}</h6>
    <h6>{{message3}}</h6>

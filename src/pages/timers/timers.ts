@@ -1,6 +1,7 @@
 import {Component, Input, AfterViewInit } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
 import {ITimer} from './itimer';
-
+import {AuthProviders, AngularFireAuth, AngularFire, FirebaseAuthState, AuthMethods} from 'angularfire2';
 
 @Component({
     selector: 'stopTimer',
@@ -11,10 +12,17 @@ export class TimerComponent implements AfterViewInit {
     @Input() timeInSeconds: number;
     @Input() test: string;
     public timer: ITimer;
-
-    constructor(
-    ) {
-    }
+    public timeToSave: number = 0;
+     private authState: FirebaseAuthState;
+  constructor(private navController: NavController,
+            private firebase: AngularFire,
+            public auth$: AngularFireAuth) {
+    //this.initApp();
+    this.authState = auth$.getAuth();
+    auth$.subscribe((state: FirebaseAuthState) => {
+      this.authState = state;
+    });
+  }
 
     ngAfterViewInit(){
 
@@ -32,9 +40,24 @@ export class TimerComponent implements AfterViewInit {
       this.initTimer();
     }
 
+    stopTimer() {
+        this.timeToSave = this.timer.secondsRemaining > 0? 
+                  this.timer.secondsRemaining:
+                  this.timer.seconds;
+        this.initTimer();
+    }
+
+    submit() {
+     
+      let db = this.firebase.database;
+       db.list('timer/'+ this.authState.auth.uid).push({
+        seconds:  this.timeToSave
+      }).then(result => this.parseResponse(result)).catch(this.handleError);
+    }
+
     initTimer() {
         if(!this.timeInSeconds) { this.timeInSeconds = 60; }
-
+        
         this.timer = <ITimer>{
             seconds: this.timeInSeconds,
             runTimer: false,
@@ -46,7 +69,21 @@ export class TimerComponent implements AfterViewInit {
         this.timer.displayTime = this.getSecondsAsDigitalClock(this.timer.secondsRemaining);
     }
 
+    parseResponse(response: any)
+      {
+          alert("Your Time has been saved!");     
+      }
+
+  handleError(error: any)
+  {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      alert("Error saving time:" + error.message);
+
+  }
+
     startTimer() {
+        this.timeToSave = 0;
         this.timer.hasStarted = true;
         this.timer.runTimer = true;
         this.timerTick();
@@ -70,6 +107,7 @@ export class TimerComponent implements AfterViewInit {
             }
             else {
                 this.timer.hasFinished = true;
+                this.timeInSeconds = this.timeInSeconds;
             }
         }, 1000);
     }
@@ -89,87 +127,3 @@ export class TimerComponent implements AfterViewInit {
     }
     
 }
-
-
-
-
-
-
-
-
-// import { Component } from '@angular/core';
-// import { NavController } from 'ionic-angular';
-// import { currentTimersPage } from '../currentTimers/currentTimers';
-
-// declare var firebase:any;
-
-// @Component({
-//   selector: 'page-timers',
-//   templateUrl: 'build/pages/timers/timers.html'
-// })
-// export class timersPage {
-
-//   constructor(public navCtrl: NavController) {
-//   	this.navCtrl = navCtrl;
-//   }
-
-//   mytimerStart1:any=null;
-//   mytimerStart2:any=null;
-//   mytimerEnd1:any=null;
-//   mytimerEnd2:any=null;
-//   db:any;
-//   ref:any;
-//   auth = firebase.auth();
-
-//   goToCurrentTimers() {
-//     this.navCtrl.push(currentTimersPage, {
-//     	param1: this.mytimerStart1, param2: this.mytimerEnd1, param3: this.mytimerStart2, param4: this.mytimerEnd2
-//     	});
-//   }
-
-//   updateInfo() {
-//       var info1;
-//       var info2;
-//       var info3;
-//       var info4;
-//       this.db = firebase.database();
-//       this.ref = this.db.ref('/timerSetting/'+this.auth.currentUser.uid);
-//       this.ref.on('value', function(snapshot){
-//         info1 = snapshot.child('Starter1').val();
-//         info2 = snapshot.child('Ender1').val();
-//         info3 = snapshot.child('Starter2').val();
-//         info4 = snapshot.child('Ender2').val();
-
-//       });
-//       this.mytimerStart1 = info1;
-//       //console.log(this.myMealtime1);
-//       this.mytimerEnd1 = info2;
-//       this.mytimerStart2 = info3;
-//       this.mytimerEnd2 = info4;
-
-//   }
-
-//     submit() {
-//       this.db = firebase.database();
-//       this.db.ref('timerSetting').child(this.auth.currentUser.uid).set({
-//         Starter1: this.mytimerStart1 == null? "":this.mytimerStart1,
-//         Ender1: this.mytimerEnd1 == null? "":this.mytimerEnd1,
-//         Starter2: this.mytimerStart2 == null? "":this.mytimerStart2,
-//         Ender2: this.mytimerEnd2 == null? "":this.mytimerEnd2
-//       }).then(result => this.parseResponse(result)).catch(this.handleError);
-//     }
-
-//   parseResponse(response: any)
-//   {
-//       alert("Your timers have been set!");     
-//   }
-
-//   handleError(error: any)
-//   {
-//       var errorCode = error.code;
-//       var errorMessage = error.message;
-//       alert("Error setting timer:" + error.message);
-
-//   };
-
-// }
