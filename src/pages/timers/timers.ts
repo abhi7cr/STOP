@@ -41,9 +41,7 @@ export class TimerComponent implements AfterViewInit {
     }
 
     stopTimer() {
-        this.timeToSave = this.timer.secondsRemaining > 0? 
-                  this.timer.secondsRemaining:
-                  this.timer.seconds;
+        this.timeToSave = this.timeInSeconds - this.timer.secondsRemaining;
         this.initTimer();
     }
 

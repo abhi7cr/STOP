@@ -10,11 +10,15 @@
 <ion-content padding class="thisDay">
 
 
-   <h4>You have take several activities...</h4>
+   <h4>You have take several activities for the day...</h4>
   <!--  <button ion-button color="secondary" full (click)="viewActivity()">View Activity</button> -->
-   <h6>{{message1}}</h6>
-   <h6>{{message2}}</h6>
-   <h6>{{message3}}</h6>
+  <ion-list>
+    <ion-item text-wrap *ngFor="let activity of activities">
+      <span><i>{{activity.message1}}</i></span>
+      <span><i>{{activity.message2}}</i></span>
+      <span><i>{{activity.message3}}</i></span>
+   </ion-item>
+  </ion-list>
 
    <h4>Do you want to manage your activities?</h4>
       <ion-item (click)="goToMealtime()">Go to manage your mealtime...</ion-item><br>

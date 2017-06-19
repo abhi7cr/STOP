@@ -18,6 +18,7 @@ export class ThisDayPage implements OnInit {
   message1:any;
   message2:any;
   message3:any;
+  activities: any[] = [];
   date: string;
   private authState: FirebaseAuthState;
   constructor(private navController: NavController,
@@ -57,25 +58,31 @@ export class ThisDayPage implements OnInit {
     for(var i in this.posts)
     {
               // if(date.getFullYear() == this.currentYear)
-
+             var message1 = '', message2 = '', message3 = '';
             if(!this.posts[i].dose)
             {
               str1='Cool! You\'ve not used a dose softner.';
+              message1 = str1;
             }   
             if(this.posts[i].sit)
             {
               str2='Great! You\'ve tried to sit down at '+this.posts[i].time+'!';
+              message2 = str2;
             }
             if(this.posts[i].stool)
             {
               str3='Excellent! You\'ve produced a stool of type '+this.posts[i].stoolType+'!';
+              message3 = str3;
             }
+            
+            this.activities.push({
+              message1: message1,
+              message2: message2,
+              message3: message3
+            });
           // }
       
     }
-    this.message1 = str1;
-    this.message2 = str2;
-    this.message3 = str3;
   }
 
   parseResponse(response)

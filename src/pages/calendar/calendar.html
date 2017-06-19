@@ -23,24 +23,24 @@
      <ion-row *ngFor="let i of rows">
       <ion-col class="grid ptSans" width-15 *ngFor="let d of displayCurrentMonth | slice:(i*7):(i+1)*7" 
                     [ngStyle]="{'color': d.color, 'background-color': d.bgColor}">  
-        <div class="row responsive-md" >
+        <div class="row" >
                 
-          <h5 style="float:left">{{d.day}}</h5>
+          <h5>{{d.day}}</h5>
           <ion-row *ngIf = "d.url1 != '' || d.url2 != ''">
-            <ion-col class="dayGrid">
-              <div *ngIf = "d.url1 != ''" style="float:left">
+            <ion-col col-12 class="dayGrid">
+              <div *ngIf = "d.url1 != ''">
             <label for="url1">Morning:</label>
             <img id="url1" [src]="d.url1" style="width: 25px; height: 25px;"/>
             </div>
             </ion-col>
-            <ion-col class="dayGrid">
-              <div style="float:left" *ngIf = "d.url2 != ''">
+            <ion-col col-12 class="dayGrid">
+              <div *ngIf = "d.url2 != ''">
                 <label for="url2">Evening:</label>
                 <img id="url2" [src]="d.url2" style="width: 25px; height: 25px;"/>
               </div>
             </ion-col>
-            <ion-col class="dayGrid">
-              <div style="float: left" *ngIf = "d.url1 != '' || d.url2 != ''">
+            <ion-col col-12 class="dayGrid">
+              <div *ngIf = "d.url1 != '' || d.url2 != ''">
                 <a style="cursor:pointer;float:left"  style="width: 20px; height: 20px;" (click)="goToMethod(d)">View Activity</a>
               </div>
             </ion-col>
