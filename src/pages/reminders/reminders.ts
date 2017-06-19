@@ -28,6 +28,7 @@ export class remindersPage implements OnInit {
 
   myReminder1:any=null;
   myReminder2:any=null;
+  notifications: any[] = [];
   db:any;
   ref:any;
 
@@ -58,35 +59,16 @@ export class remindersPage implements OnInit {
       this.ref.subscribe(snapshot => {
         this.myReminder1 = snapshot.child('reminder1').val();
         this.myReminder2 = snapshot.child('reminder2').val();
+        //this.updateLocalNotifications();
       });
    
-
-      //reminder notifications
-      //let currentDate = new Date(); // Sunday = 0, Monday = 1, etc.
-     
-                //let firstNotificationTime = new Date();
-
-                //firstNotificationTime.setHours(this.chosenHours);
-                //firstNotificationTime.setMinutes(this.chosenMinutes);
-     
-                //let notification = {
-                    //id: day.dayCode,
-                    //title: 'Hey!',
-                    //text: 'You just got notified :)',
-                    //at: firstNotificationTime,
-                    //every: 'week'
-                //};
-     
-                //this.notifications.push(notification);
-     
-        //console.log("Notifications to be scheduled: ", this.notifications);
-        //LocalNotifications.schedule(this.notifications);
-
+      
   }
 
   parseResponse(response: any)
   {
       alert("Your reminder has been set!");     
+      this.updateLocalNotifications();
   }
 
   handleError(error: any)
@@ -103,6 +85,48 @@ export class remindersPage implements OnInit {
         reminder2: this.myReminder2 == null? "":this.myReminder2
       }).then(result => this.parseResponse(result)).catch(this.handleError);
 
+    }
+
+    updateLocalNotifications() {
+       //reminder notifications
+      let currentDate = new Date(); // Sunday = 0, Monday = 1, etc.
+     
+      let firstNotificationTime = new Date();
+      let secondNotificationTime = new Date();
+      let hourMinute1 = this.myReminder1.split(':');
+      let hour1 = hourMinute1[0];
+      let minute1 = hourMinute1[1];
+      firstNotificationTime.setHours(hour1);
+      firstNotificationTime.setMinutes(minute1);
+      let hourMinute2 = this.myReminder2.split(':');
+      let hour2 = hourMinute2[0];
+      let minute2 = hourMinute2[1];
+      secondNotificationTime.setHours(hour2);
+      secondNotificationTime.setMinutes(minute2);
+
+       alert(firstNotificationTime.toLocaleString() + "," + secondNotificationTime.toLocaleString());
+     
+       let notification1 = {
+                    id: this.myReminder1,
+                    title: 'Hey!',
+                    text: 'This is your reminder to go to the toilet',
+                    at: firstNotificationTime,
+                    every: 'week'
+        };
+     
+         let notification2 = {
+                    id: this.myReminder2,
+                    title: 'Hey!',
+                    text: 'This is your reminder to go to the toilet',
+                    at: secondNotificationTime,
+                    every: 'week'
+        };
+
+        this.notifications.push(notification1);
+        this.notifications.push(notification2);
+     
+        console.log("Notifications to be scheduled: ", this.notifications);
+        LocalNotifications.schedule(this.notifications);
     }
 
 }
