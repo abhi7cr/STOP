@@ -1,20 +1,18 @@
 <ion-header>
   <ion-navbar>
-  <button ion-button menuToggle>
+  <button ion-button name="button" menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title class="ptSans">
-      My Calendar
-    </ion-title>
+    <ion-title><span>Welcome <span style="color:blue;">{{userName}}!</span></span></ion-title>
+    <ion-buttons end>  
+    <button ion-button small (click)="logout()">Logout</button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
-
-<ion-content padding class="calendar">
- <div *ngIf="!hasLoaded">Please Wait...</div>
+<ion-content padding class="newHome">
+	 <div *ngIf="!hasLoaded">Please Wait...</div>
   <div *ngIf="hasLoaded">
     <h4><span class="ptSans">{{currentMonth}}, {{currentYear}}</span></h4>
-    <button ion-button (click)="goToPreviousMonth()"><ion-icon name="arrow-back"></ion-icon> </button>
-    <button ion-button (click)="goToNextMonth()"><ion-icon name="arrow-forward"></ion-icon> </button>
    <!--  <button (click)="clear()">Clear</button> -->
     <br/>
     <ion-row>
@@ -22,8 +20,8 @@
     <span>{{day}}</span>
     </ion-col>
     </ion-row>
-     <ion-row *ngFor="let i of rows">
-      <ion-col class="grid ptSans" width-15 *ngFor="let d of displayCurrentMonth | slice:(i*7):(i+1)*7" 
+     <ion-row>
+      <ion-col class="grid ptSans" width-15 *ngFor="let d of displayCurrentWeek"
                     [ngStyle]="{'color': d.color, 'background-color': d.bgColor}">  
         <div class="row" >
                 
@@ -53,7 +51,13 @@
         </div>
       </ion-col>
      </ion-row>
-     </div>
     <!-- </ion-list> -->
-     <!-- <p-schedule [events]="events"></p-schedule> -->
+</div>
+
+<button style="margin-top: 5%" ion-button color="dark" block large (click)="goToMenu()"><ion-icon name="menu" ></ion-icon></button>
+
+<button style="margin-top: 5%" ion-button color="secondary" block large (click)="goToCalendarPage()"><ion-icon name="calendar" ></ion-icon></button>
+
+<button style="margin-top: 5%" ion-button color="danger" block large (click)="goToHomePage()">
+<ion-icon name="help" ></ion-icon></button>
 </ion-content>

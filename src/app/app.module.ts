@@ -15,6 +15,7 @@ import {TimerPage} from '../pages/timers/timer';
 import {aboutPage} from '../pages/about/about';
 import {helpPage} from '../pages/help/help';
 import {HomePage} from '../pages/home/home';
+import {NewHomePage} from '../pages/newHome/newHome';
 import {settingEmojiPage } from '../pages/settingEmoji/settingEmoji';
 import {currentMealtimePage} from '../pages/currentMealtime/currentMealtime';
 import {currentRemindersPage} from '../pages/currentReminders/currentReminders';
@@ -22,6 +23,8 @@ import {currentTimersPage} from '../pages/currentTimers/currentTimers';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import {ThisDayPage} from '../pages/thisDay/thisDay';
+
+import {CalendarService} from '../pages/calendar/calendar.service'
 
 export const firebaseConfig = {
   apiKey: "AIzaSyCBvKIztKx4W1oSJ0Eti8aVljxEmMzNlII",
@@ -45,7 +48,8 @@ export const firebaseConfig = {
     CalendarPage,
     LoginPage,
     TimerPage,
-    ThisDayPage
+    ThisDayPage,
+    NewHomePage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -69,11 +73,13 @@ export const firebaseConfig = {
     CalendarPage,
     TimerPage,
     LoginPage,
-    ThisDayPage
+    ThisDayPage,
+    NewHomePage
   ],
   providers: [
     StatusBar,
     SplashScreen,
+    CalendarService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

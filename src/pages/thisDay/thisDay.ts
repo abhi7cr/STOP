@@ -57,28 +57,54 @@ export class ThisDayPage implements OnInit {
     var str3='';
     for(var i in this.posts)
     {
+        let hourMinuteComponents = this.posts[i].time.split(':');
+        let hourComponent = hourMinuteComponents[0]
+        let minuteComponent = hourMinuteComponents[1]
+        let stool = false;
+        let sit = false;
+        let noDose = false;
+        let classColor = '';
+        
+        if(Number(minuteComponent) < 10)
+          minuteComponent = '0' + minuteComponent;
+        if(hourComponent === '0')
+            this.posts[i].time = hourComponent + '0' + ':' + minuteComponent;
+
+        let formattedTime = Number(hourComponent) >= 12?
+                  this.posts[i].time + ' pm': this.posts[i].time + ' am';
               // if(date.getFullYear() == this.currentYear)
              var message1 = '', message2 = '', message3 = '';
             if(!this.posts[i].dose)
             {
               str1='Cool! You\'ve not used a dose softner.';
               message1 = str1;
+              noDose = true;
             }   
             if(this.posts[i].sit)
             {
-              str2='Great! You\'ve tried to sit down at '+this.posts[i].time+'!';
+              str2='Great! You\'ve tried to sit down at '+formattedTime+' !';
               message2 = str2;
+              sit = true;
             }
             if(this.posts[i].stool)
             {
-              str3='Excellent! You\'ve produced a stool of type '+this.posts[i].stoolType+'!';
+              str3='Excellent! You\'ve produced a stool of type '+this.posts[i].stoolType+' !';
               message3 = str3;
+              stool = true;
             }
-            
+
+            if(stool)
+                classColor = 'green';
+            else if(sit)
+                classColor = 'red';
+            else if(noDose)
+                classColor = 'blue';
+
             this.activities.push({
               message1: message1,
               message2: message2,
-              message3: message3
+              message3: message3,
+              class: classColor
             });
           // }
       

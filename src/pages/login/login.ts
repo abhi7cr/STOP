@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NavController} from 'ionic-angular';
-import {HomePage} from '../home/home';
+import {NewHomePage} from '../newHome/newHome';
 import {AuthProviders, AngularFireAuth, AngularFire, FirebaseAuthState, AuthMethods} from 'angularfire2';
 //declare var firebase: any;
 
@@ -29,7 +29,7 @@ export class LoginPage implements OnInit {
   
     parseResponse(response: any)
 	  {
-           this.navController.setRoot(HomePage);
+           this.navController.setRoot(NewHomePage);
 	  } 
 
 	handleError(error: any)

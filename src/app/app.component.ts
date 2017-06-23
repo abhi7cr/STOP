@@ -5,6 +5,7 @@ import { Platform, MenuController, Nav } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import {NewHomePage} from '../pages/newHome/newHome';
 import {TabsPage} from '../pages/tabs/tabs';
 import {mealtimePage} from '../pages/mealtime/mealtime';
 import {remindersPage} from '../pages/reminders/reminders';
@@ -33,11 +34,12 @@ export class MyApp {
   ) {
     this.initializeApp();
 
-    this.rootPage = TabsPage;
+    this.rootPage = NewHomePage;
 
 
    this.pages= [
-      { title: 'Home', component: TabsPage },
+      {title: 'Home', component: NewHomePage},
+      {title: 'Questionnaire', component: TabsPage },
       { title: 'Set mealtime', component: mealtimePage },
       { title: 'Set reminders', component: remindersPage },
       { title: 'Set timers', component: TimerPage },

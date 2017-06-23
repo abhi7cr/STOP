@@ -14,9 +14,11 @@
   <!--  <button ion-button color="secondary" full (click)="viewActivity()">View Activity</button> -->
   <ion-list>
     <ion-item text-wrap *ngFor="let activity of activities">
+      <p [style.color]="activity.class">
       <span><i>{{activity.message1}}</i></span>
       <span><i>{{activity.message2}}</i></span>
       <span><i>{{activity.message3}}</i></span>
+      </p>
    </ion-item>
   </ion-list>
 
