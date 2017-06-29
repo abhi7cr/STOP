@@ -7,6 +7,7 @@ import {AuthProviders, AngularFireAuth, AngularFire, FirebaseAuthState, AuthMeth
 
 @Injectable()
 export class CalendarService {
+	@ViewChild(Nav) navController;
 	constructor(
             private firebase: AngularFire,
             public auth$: AngularFireAuth){
@@ -14,11 +15,12 @@ export class CalendarService {
     auth$.subscribe((state: FirebaseAuthState) => {
       this.authState = state;
       if(this.authState === null || this.authState === undefined)
-      	this.navController.push(LoginPage);
+      	if(this.navController !== undefined)
+      		this.navController.push(LoginPage);
     });
 
 	}
-	@ViewChild(Nav) navController;
+	
 	private authState: FirebaseAuthState;
 	displayCurrentMonth: any[] = [];
 	events: any[];

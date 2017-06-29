@@ -19,6 +19,7 @@ export class NewHomePage {
 	 currentMonth: string;
 	 currentYear: number;
 	 daysOfWeek: any[] = [];
+	 currentMonthInNumber: number = 0;
 	 hasLoaded: boolean = false;
 
 	 constructor(private navController: NavController, 
@@ -31,9 +32,9 @@ export class NewHomePage {
       this.authState = auth$.getAuth();
     auth$.subscribe((state: FirebaseAuthState) => {
       this.authState = state;
-
+      let activeComponent = this.navController.getActive().component.name;
    
-    if(this.authState === undefined || this.authState === null){
+    if(this.authState === undefined || this.authState === null && activeComponent !== 'LoginPage'){
            this.navController.setRoot(LoginPage); 
     }
     else{
@@ -58,16 +59,21 @@ export class NewHomePage {
 
   ionViewWillEnter = () => {
 			//this.fetchLogs();
-			if(this.authState !== null){
-			this.calendarService.fetchLogs().subscribe(
+		// while(true){
+			if(this.authState !== null)
+			{
+				this.calendarService.fetchLogs().subscribe(
 				() => this.updateProperties());
-		}
+			}
+		// }
 	}
 
 	updateProperties = () => {
 			let displayCurrentMonth = this.calendarService.displayCurrentMonth;
 			this.currentMonth = this.calendarService.currentMonth;
 			this.currentYear = this.calendarService.currentYear;
+			this.currentMonthInNumber =  this.calendarService.currentMonthInNumber;
+			this.daysOfWeek = this.calendarService.daysOfWeek;
 			this.daysOfWeek = this.calendarService.daysOfWeek;
 			let currentDate = new Date().getDate();
 			let index = -1;
@@ -76,7 +82,9 @@ export class NewHomePage {
 					index = ind;
 				return val.day === currentDate;
 			});
+
 			let startWeekIndex = index % 7 === 0? index: index - index%7;
+			//alert(startWeekIndex);
 
 			this.displayCurrentWeek = displayCurrentMonth.filter((val, ind) => {			
 				return ind >= startWeekIndex && ind <= (startWeekIndex+7);

@@ -31,16 +31,20 @@
           <ion-row *ngIf = "d.url1 != '' || d.url2 != '' || d.url11 != '' || d.url22 != ''">
             <ion-col col-12 class="dayGrid">
               <div *ngIf = "d.url1 !== '' || d.url11 !== ''">
-            <label for="url1">Morning:</label>
-            <img id="url1" *ngIf="d.url1 !== ''" [src]="d.url1" style="width: 15px; height: 15px;"/><span *ngIf="d.url1 !== ''">:{{d.morningStoolCount}}</span>
-            <img id="url11" *ngIf="d.url11 !== ''" [src]="d.url11" style="width: 15px; height: 15px;"/><span *ngIf="d.url11 !== ''">:{{d.morningSitCount}}</span>
+            <label for="url1">AM:</label>
+            <img id="url1" *ngIf="d.url1 !== ''" [src]="d.url1" style="width: 15px; height: 15px;"/>
+            <!-- <span *ngIf="d.url1 !== ''">:{{d.morningStoolCount}}</span> -->
+            <img id="url11" *ngIf="d.url11 !== ''" [src]="d.url11" style="width: 15px; height: 15px;"/>
+            <!-- span *ngIf="d.url11 !== ''">:{{d.morningSitCount}}</span> -->
             </div>
             </ion-col>
             <ion-col col-12 class="dayGrid">
               <div *ngIf = "d.url2 !== '' || d.url22 !== ''">
-                <label for="url2">Evening:</label>
-                <img id="url2" *ngIf="d.url2 !== ''" [src]="d.url2" style="width: 15px; height: 15px;"/><span *ngIf="d.url2 !== ''">:{{d.eveningStoolCount}}</span>
-                <img id="url22" *ngIf="d.url22 !== ''" [src]="d.url22" style="width: 15px; height: 15px;"/><span *ngIf="d.url22 !== ''">:{{d.eveningSitCount}}</span>
+                <label for="url2">PM:</label>
+                <img id="url2" *ngIf="d.url2 !== ''" [src]="d.url2" style="width: 15px; height: 15px;"/>
+                <!-- span *ngIf="d.url2 !== ''">:{{d.eveningStoolCount}}</span> -->
+                <img id="url22" *ngIf="d.url22 !== ''" [src]="d.url22" style="width: 15px; height: 15px;"/>
+                <!-- <span *ngIf="d.url22 !== ''">:{{d.eveningSitCount}}</span> -->
               </div>
             </ion-col>
             <ion-col col-12 class="dayGrid">
