@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, Platform, NavParams } from 'ionic-angular';
 import { currentRemindersPage } from '../currentReminders/currentReminders';
 import { HomePage } from '../home/home';
-
+import { NewHomePage } from '../newHome/newHome';
 import { LocalNotifications } from 'ionic-native';
 import {AngularFire, FirebaseAuthState, AngularFireAuth} from 'angularfire2';
 //import * as moment from 'moment';
@@ -33,6 +33,7 @@ export class remindersPage implements OnInit {
   notifications: any[] = [];
   db:any;
   ref:any;
+  reminderText: string = 'Reminder to go to the toilet and complete questionnare!';
 
   //notifyTime: any;
   //notifications: any[] = [];
@@ -114,7 +115,7 @@ export class remindersPage implements OnInit {
        let notification1 = {
                     id: '1',
                     title: 'Hey!',
-                    text: 'This is your reminder to go to the toilet',
+                    text: this.reminderText,
                     at: firstNotificationTime,
                     every: 'day'
         };
@@ -122,7 +123,7 @@ export class remindersPage implements OnInit {
        let notification2 = {
                     id: '2',
                     title: 'Hey!',
-                    text: 'This is your reminder to go to the toilet',
+                    text: this.reminderText,
                     at: secondNotificationTime,
                     every: 'day'
         };
@@ -136,8 +137,8 @@ export class remindersPage implements OnInit {
         this.notifications = [];
         LocalNotifications.on('click', () => {
             let activeComponent = this.navController.getActive().component.name;
-            if(activeComponent !== 'HomePage')
-              this.navController.push(HomePage);
+            if(activeComponent !== 'NewHomePage')
+              this.navController.setRoot(NewHomePage);
         });
       });
     }
