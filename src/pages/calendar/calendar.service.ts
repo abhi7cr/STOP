@@ -3,25 +3,29 @@ import * as moment from 'moment';
 import {NavController, Nav, App} from 'ionic-angular';
 import {LoginPage} from '../login/login';
 import {Observable} from 'rxjs';
-import {AuthProviders, AngularFireAuth, AngularFire, FirebaseAuthState, AuthMethods} from 'angularfire2';
+//import {AuthProviders, AngularFireAuth, AngularFire, FirebaseAuthState, AuthMethods} from 'angularfire2';
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Injectable()
 export class CalendarService {
 	@ViewChild(Nav) navController;
+	private auth;
+	private authState;
 	constructor(
-            private firebase: AngularFire,
-            public auth$: AngularFireAuth){
-		 this.authState = auth$.getAuth();
-    auth$.subscribe((state: FirebaseAuthState) => {
-      this.authState = state;
-      if(this.authState === null || this.authState === undefined)
+            public auth$: AngularFireAuth,
+            public db: AngularFireDatabase){
+		 this.authState = auth$.authState;
+         this.authState.subscribe((state) => {
+           this.auth = state;
+      if(this.auth === null || this.auth === undefined){
       	if(this.navController !== undefined)
       		this.navController.push(LoginPage);
-    });
+      }
+   });
 
 	}
 	
-	private authState: FirebaseAuthState;
 	displayCurrentMonth: any[] = [];
 	events: any[];
     user: any;
@@ -41,7 +45,7 @@ export class CalendarService {
 	today: string = moment().format('D MMM YYYY');
 	daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 	offset = 0;
-	db:any;
+	//db:any;
     ref:any
 
 
@@ -67,7 +71,7 @@ export class CalendarService {
  				var prevYear = this.days[prevYearId];
  				if(prevYear != null &&
  					prevYear[prevMonthId] != null &&
- 					prevYear[prevMonthId][noOfDays-i] != null){
+ 					prevYear[prevMonthId][i] != null){
  				this.displayCurrentMonth[i] = prevYear[prevMonthId][i];
  				this.displayCurrentMonth[i].day = i;
  				this.displayCurrentMonth[i].color = 'gray';
@@ -338,8 +342,7 @@ export class CalendarService {
 	}
 	
    updateInfo = (observer) => {
-      this.db = this.firebase.database;
-      this.ref = this.db.object('/emojiSetting/'+this.authState.auth.uid, { preserveSnapshot: true });
+      this.ref = this.db.object('/emojiSetting/'+this.auth.uid, { preserveSnapshot: true });
       this.ref.subscribe(snapshot => {
       		this.postProcess(snapshot, observer);
       });
@@ -437,10 +440,10 @@ export class CalendarService {
 
     fetchLogs() {
 
-    	if(this.firebase.auth != null)
+    	if(this.auth != null)
     	{
-    		var uid = this.authState.auth.uid;
-    		var ref = this.firebase.database.list('logs/'+uid);
+    		var uid = this.auth.uid;
+    		var ref = this.db.list('logs/'+uid);
     		this.currentMonthInNumber = new Date(Date.now()).getMonth();
 			this.currentDay = this.mapNumberToDay(new Date(Date.now()).getDay());
 			this.currentDayInNumber = new Date(Date.now()).getDay();

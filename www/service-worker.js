@@ -14,6 +14,7 @@ self.toolbox.options.cache = {
 // pre-cache our key assets
 self.toolbox.precache(
   [
+    './build/vendor.js',
     './build/main.js',
     './build/main.css',
     './build/polyfills.js',
@@ -28,3 +29,19 @@ self.toolbox.router.any('/*', self.toolbox.cacheFirst);
 // for any other requests go to the network, cache,
 // and then only use that cached resource if your user goes offline
 self.toolbox.router.default = self.toolbox.networkFirst;
+
+self.addEventListener('push', function(event) {
+  console.log('Received a push message', event);
+
+  var title = 'Hey';
+  var body = 'This is a reminder to go to Toilet';
+  var icon = '/assets/images/STOP_FINAL.png';
+  var tag = 'simple-push-demo-notification-tag';
+
+  event.waitUntil(
+    self.registration.showNotification(title, {
+      body: body,
+      icon: icon,
+      tag: tag
+   }));
+});

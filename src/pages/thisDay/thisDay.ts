@@ -4,33 +4,34 @@ import {mealtimePage} from '../mealtime/mealtime';
 import { remindersPage } from '../reminders/reminders';
 import { TimerPage } from '../timers/timer';
 import { settingEmojiPage } from '../settingEmoji/settingEmoji';
-import {AuthProviders, AngularFireAuth, AngularFire, FirebaseAuthState, AuthMethods} from 'angularfire2';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+//import {AuthProviders, AngularFireAuth, AngularFire, FirebaseAuthState, AuthMethods} from 'angularfire2';
+import { LoginPage } from '../login/login';
 
 
 @Component({
   templateUrl: 'thisDay.html'
 })
 export class ThisDayPage implements OnInit {
-
-  db:any;
-  auth = this.firebase.auth.getAuth().auth;
   posts: any[] = [];
   message1:any;
   message2:any;
   message3:any;
   activities: any[] = [];
   date: string;
-  private authState: FirebaseAuthState;
+  private authState;
+  private auth;
   constructor(private navController: NavController,
-            private firebase: AngularFire,
             public auth$: AngularFireAuth,
+            public db: AngularFireDatabase,
             private navParams: NavParams) {
     //this.initApp();
-    this.authState = auth$.getAuth();
-    auth$.subscribe((state: FirebaseAuthState) => {
-      this.authState = state;
-    //   if(this.authState === null || this.authState === undefined)
-    //     //this.navController.push(LoginPage);
+    this.authState = auth$.authState;
+    this.authState.subscribe((state) => {
+      this.auth = state;
+      if(this.auth === undefined)
+        this.navController.push(LoginPage);
     });
   }
 
@@ -126,10 +127,10 @@ export class ThisDayPage implements OnInit {
   }
 
   fetchLogs(ms: number) {  
-        var uid = this.authState.auth.uid;
+        var uid = this.auth.uid;
         let oneDayInMs:number = 3600*1000*24;
         let nextDayinMs:number = ms + oneDayInMs;
-        var ref = this.firebase.database.list('logs/'+ uid, 
+        var ref = this.db.list('logs/'+ uid, 
           { 
             query: {
             orderByChild: 'date',

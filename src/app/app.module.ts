@@ -1,8 +1,10 @@
-import { NgModule, ErrorHandler } from '@angular/core';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { BrowserModule } from '@angular/platform-browser';
+import { ErrorHandler, NgModule } from '@angular/core';
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { MyApp } from './app.component';
-import {FIREBASE_PROVIDERS, defaultFirebase, AngularFire, AngularFireModule, AuthMethods,
-    AuthProviders} from 'angularfire2';
+import { AngularFireModule} from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 
 import {TabsPage} from '../pages/tabs/tabs';
 import {LoginPage} from '../pages/login/login';
@@ -27,7 +29,7 @@ import {ThisDayPage} from '../pages/thisDay/thisDay';
 import {CalendarService} from '../pages/calendar/calendar.service'
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyCBvKIztKx4W1oSJ0Eti8aVljxEmMzNlII",
+    apiKey: "AIzaSyCBvKIztKx4W1oSJ0Eti8aVljxEmMzNlII",
     authDomain: "stop-847d8.firebaseapp.com",
     databaseURL: "https://stop-847d8.firebaseio.com",
     storageBucket: "stop-847d8.appspot.com"
@@ -52,11 +54,12 @@ export const firebaseConfig = {
     NewHomePage
   ],
   imports: [
+    BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(
-      firebaseConfig,
-      {method: AuthMethods.Password,
-       provider: AuthProviders.Password})
+      firebaseConfig),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

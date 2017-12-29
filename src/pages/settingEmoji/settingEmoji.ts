@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import {AuthProviders, AngularFireAuth, AngularFire, FirebaseAuthState, AuthMethods} from 'angularfire2';
+//import {AuthProviders, AngularFireAuth, AngularFire, FirebaseAuthState, AuthMethods} from 'angularfire2';
 //declare var firebase:any;
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import * as firebase from 'firebase/app';
 
 
 @Component({
@@ -14,19 +17,18 @@ export class settingEmojiPage {
 	url1:any;
 	url2:any;
 
-  private authState: FirebaseAuthState;
+  private authState;
+  private auth;
   constructor(private navController: NavController,
-            private firebase: AngularFire,
-            public auth$: AngularFireAuth) {
+            public auth$: AngularFireAuth,
+            public db: AngularFireDatabase) {
     //this.initApp();
-    this.authState = auth$.getAuth();
-    auth$.subscribe((state: FirebaseAuthState) => {
-      this.authState = state;
+    this.authState = auth$.authState;
+    this.authState.subscribe((state) => {
+      this.auth = state;
     });
   }
 
-  db:any;
-  auth = this.firebase.auth.getAuth().auth;
 
   getSelectedEmojis() {
   var element1_1 = <HTMLInputElement> document.getElementById("1-1");
@@ -67,8 +69,7 @@ export class settingEmojiPage {
 
     submit() {
       this.getSelectedEmojis();
-      this.db = this.firebase.database;
-      this.db.object('emojiSetting/'+ this.authState.auth.uid).set({
+      this.db.object('emojiSetting/'+ this.auth.uid).set({
         url1: this.url1 == null? "":this.url1,
         url2: this.url2 == null? "":this.url2
       }).then(result => this.parseResponse(result)).catch(this.handleError);

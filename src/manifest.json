@@ -9,5 +9,6 @@
     "type": "image/png"
   }],
   "background_color": "#4e8ef7",
-  "theme_color": "#4e8ef7"
+  "theme_color": "#4e8ef7",
+  "gcm_sender_id" : "AAAA_-45Fes:APA91bFvtqf130TiipD53EyG0yp93_5GlgGgHjQayah5K03N1NYWOv5eRvA2hgOcLFebEuey2ksJ8uYHruSWey3zzKN8t-H-3GSwEECVHYqoXOGcn3-HwbCVhYi-CG3vWqDwj428hKuA",
 }

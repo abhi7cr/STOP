@@ -1,7 +1,9 @@
 import {Component, Input, AfterViewInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import {ITimer} from './itimer';
-import {AuthProviders, AngularFireAuth, AngularFire, FirebaseAuthState, AuthMethods} from 'angularfire2';
+//import {AuthProviders, AngularFireAuth, AngularFire, FirebaseAuthState, AuthMethods} from 'angularfire2';
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Component({
     selector: 'stopTimer',
@@ -13,15 +15,15 @@ export class TimerComponent implements AfterViewInit {
     @Input() test: string;
     public timer: ITimer;
     public timeToSave: number = 0;
-     private authState: FirebaseAuthState;
+     private authState;
   constructor(private navController: NavController,
-            private firebase: AngularFire,
+            public db: AngularFireDatabase,
             public auth$: AngularFireAuth) {
     //this.initApp();
-    this.authState = auth$.getAuth();
-    auth$.subscribe((state: FirebaseAuthState) => {
-      this.authState = state;
-    });
+    this.authState = auth$.authState;
+    // auth$.subscribe((state: FirebaseAuthState) => {
+    //   this.authState = state;
+    // });
   }
 
     ngAfterViewInit(){
@@ -47,8 +49,8 @@ export class TimerComponent implements AfterViewInit {
 
     submit() {
      
-      let db = this.firebase.database;
-       db.list('timer/'+ this.authState.auth.uid).push({
+     
+       this.db.list('timer/'+ this.authState.auth.uid).push({
         seconds:  this.timeToSave
       }).then(result => this.parseResponse(result)).catch(this.handleError);
     }

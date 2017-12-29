@@ -5,9 +5,10 @@ import {HomePage} from '../home/home';
 import {ThisDayPage} from '../thisDay/thisDay';
 // import {Schedule} from 'primeng/primeng';
 import * as moment from 'moment';
-import {AuthProviders, AngularFireAuth, AngularFire, FirebaseAuthState, AuthMethods} from 'angularfire2';
+//import {AuthProviders, AngularFireAuth, AngularFire, FirebaseAuthState, AuthMethods} from 'angularfire2';
 import {CalendarService} from './calendar.service';
-
+import {  AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import {  AngularFireAuth } from 'angularfire2/auth';
 //declare var firebase: any;
 
 
@@ -17,7 +18,8 @@ import {CalendarService} from './calendar.service';
 
 export class CalendarPage implements OnInit{
 
- private authState: FirebaseAuthState;
+ private authState;
+ private auth;
   events: any[];
     user: any;
 	posts: any[] = [];
@@ -37,26 +39,25 @@ export class CalendarPage implements OnInit{
 	displayCurrentMonth: any[] = [];
 	daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 	offset = 0;
-	db:any;
     ref:any;
     hasLoaded: boolean = false;
   constructor(private navController: NavController,
-            private firebase: AngularFire,
             public auth$: AngularFireAuth,
+            public db: AngularFireDatabase,
             private calendarService: CalendarService) {
   	//this.initApp();
-    this.authState = auth$.getAuth();
-    auth$.subscribe((state: FirebaseAuthState) => {
-      this.authState = state;
-      if(this.authState === null || this.authState === undefined)
+    this.authState = auth$.authState;
+    this.authState.subscribe((state) => {
+      this.auth = state;
+      if(this.auth === null || this.auth === undefined)
       	this.navController.push(LoginPage);
     });
   }
 
   ngOnInit(){
-  	 if(this.authState === null || this.authState === undefined){
-         this.navController.setRoot(LoginPage); 
-    }
+  	 // if(this.auth === null || this.auth === undefined){
+    //      this.navController.setRoot(LoginPage); 
+    // }
   }
    
 

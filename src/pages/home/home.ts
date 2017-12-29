@@ -2,8 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {NavController, NavParams, MenuController} from 'ionic-angular';
 import {BristolPage} from '../bristol/bristol';
 import {LoginPage} from '../login/login';
-import { LocalNotifications } from 'ionic-native';
-import {AuthProviders, AngularFireAuth, AngularFire, FirebaseAuthState, AuthMethods} from 'angularfire2';
+import { LocalNotifications } from '@ionic-native/local-notifications';
+import { AngularFireAuth } from 'angularfire2/auth';
+import * as firebase from 'firebase/app';
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+//import {AuthProviders, AngularFireAuth, AngularFire, FirebaseAuthState, AuthMethods} from 'angularfire2';
 
 //declare var firebase: any;
 
@@ -12,43 +15,30 @@ import {AuthProviders, AngularFireAuth, AngularFire, FirebaseAuthState, AuthMeth
 })
 export class HomePage implements OnInit {
 
- private authState: FirebaseAuthState;
-
+ private authState;
+ private auth;
   constructor(private navController: NavController, 
     private navParams: NavParams,
      public menuCtrl: MenuController,
-     private firebase: AngularFire,
-     private auth$: AngularFireAuth) {
+     private auth$: AngularFireAuth,
+     public db: AngularFireDatabase) {
     //this.user = firebase.auth().currentUser;
-      this.authState = auth$.getAuth();
-    auth$.subscribe((state: FirebaseAuthState) => {
-      this.authState = state;
-   
-    if(this.authState === undefined || this.authState === null){
+      this.authState = auth$.authState;
+      this.authState.subscribe((state) => {
+       this.auth = state;
+       if(this.auth === undefined || this.auth === null){
            this.navController.setRoot(LoginPage); 
-    }
-    });
-  }
-
-  ngOnInit(){
-   
-   
-
-    // Schedule delayed notification 
-
-   //    LocalNotifications.schedule({
-   //       title: 'Hey There!',
-   //       text: 'Time to poop :)',
-   //       at: new Date(new Date().getTime()+3000),
-   //       sound: 'file://night_owl.mp3',
-   //       data: { message : 'Time to poop' }
-   //       //every: 'minute'
-   // });
+      }
+  })
     }
 
-       openMenu() {
-   this.menuCtrl.open();
- }
+
+  ngOnInit() {
+   }
+
+    openMenu() {
+      this.menuCtrl.open();
+   }
 
 
   hasSit = false;
@@ -58,16 +48,14 @@ export class HomePage implements OnInit {
   myDate: any = null;
   event = {timeStarts:''};
   stoolType = 1;
-  db: any;
   sit = false;
   dose = false;
   titleText:string = "";
-  auth = this.firebase.auth;
   user: any;
 
   logout(){
   
-    this.firebase.auth.logout().then((response) => {
+    this.auth$.auth.signOut().then((response) => {
           //this.navController.setRoot(LoginPage);
             //this.auth$.unsubscribe();
     });
@@ -75,7 +63,7 @@ export class HomePage implements OnInit {
 
 
   toggleSit(){
-  		if (this.checked){
+  		if (this.sit){
   			this.hasSit = true;
   		}
   		else{
@@ -112,20 +100,20 @@ export class HomePage implements OnInit {
   }
 
   submit(){
-      // Get a reference to the storage service, which is used to create references in your storage bucket
-  this.db = this.firebase.database;
   var currentDate = new Date().getTime();
-  var ref = this.db.list('/logs/'+this.authState.uid);
+  var ref = this.db.list('/logs/'+this.auth.uid);
   ref.push({
-    name: this.authState.auth.email.split('@')[0].toString(),
-    uid: this.authState.uid,
-    stool: this.stool,
+    name: this.auth.email.split('@')[0].toString(),
+    uid: this.auth.uid,
+    stool: !!this.stool,
     dose: this.dose,
     stoolType: this.stool? this.stoolType: "None",
-    sit: this.sit,
+    sit: !!this.sit,
     time: this.myDate == null? "":this.myDate,
     date: currentDate
-  }).then(result => this.parseResponse(result)).catch(this.handleError);
+  })
+  .then(result => this.parseResponse(result))
+  .catch(this.handleError);
   }
 
   reset(){
@@ -135,15 +123,14 @@ export class HomePage implements OnInit {
   }
 
   ionViewDidEnter(){
-    if(this.authState !== null && this.authState.auth !== null){
-       this.titleText = "Welcome "+ this.authState.auth.email.split('@')[0].toString();
+    if(this.auth !== null){
+       this.titleText = "Welcome "+ this.auth.email.split('@')[0].toString();
+    }
   }
-}
 
   setCurrentDateTime(){
     var date = new Date();
     let _myDate = date.getHours() +":"+ date.getMinutes();
     this.myDate = _myDate;
-    //alert(this.myDate);
   }
 }

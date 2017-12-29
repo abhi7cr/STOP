@@ -6,7 +6,6 @@
  <ion-title class="ptSans">
       Questionnaire
     </ion-title>
-
   </ion-navbar>
 </ion-header>
 
@@ -18,28 +17,60 @@
     <ion-checkbox checked="false" [(ngModel)]="dose"></ion-checkbox>
   </ion-item>
   
-  <ion-item text-wrap>
-  <!-- <ion-toggle checked="false" [(ngModel)]="sit" (ionChange)="toggleSit()"></ion-toggle> -->
+  <!-- <ion-item text-wrap>
+  <ion-toggle checked="false" [(ngModel)]="sit" (ionChange)="toggleSit()"></ion-toggle>
     <ion-label>  Did you try to sit down to poop in the bathroom?</ion-label>
     <ion-checkbox checked="false" [(ngModel)]="sit" (ionChange)="toggleSit()"></ion-checkbox>
+  </ion-item> -->
+
+  <ion-list radio-group text-wrap [(ngModel)]="sit">
+  <ion-list-header>
+    Did you try to sit down to poop in the bathroom?
+  </ion-list-header>
+
+  <ion-item>
+    <ion-label>Yes</ion-label>
+    <ion-radio name="yes" value="true" (ionChange)="toggleSit()"></ion-radio>
   </ion-item>
 
-  <ion-item *ngIf="sit">
+  <ion-item>
+    <ion-label>No</ion-label>
+    <ion-radio name="no" checked="true" value="false" (ionChange)="toggleSit()"></ion-radio>
+  </ion-item>
+  </ion-list>
+
+  <ion-item *ngIf="sit == 'true'">
     Click <button  ion-button small round (click)="setCurrentDateTime()">Now</button> to choose current time
   </ion-item>
   
-  <ion-item *ngIf="sit" text-wrap>
+  <ion-item *ngIf="sit == 'true'" text-wrap>
     <ion-label>Or choose the time you went</ion-label>
     <ion-datetime displayFormat="hh:mm a" pickerFormat="hh:mm a" [(ngModel)]="myDate"></ion-datetime>
   </ion-item>
   
-  <ion-item *ngIf="sit" text-wrap>
-   <!--  <ion-toggle checked="false" [(ngModel)]="stool" (ionChange)="toggleStool()"></ion-toggle> -->
+ <!--  <ion-item >
+   <ion-toggle checked="false" [(ngModel)]="stool" (ionChange)="toggleStool()"></ion-toggle>
     <ion-label> Did you produce stool?</ion-label>
     <ion-checkbox checked="false" [(ngModel)]="stool" (ionChange)="toggleStool()"></ion-checkbox>
+  </ion-item> -->
+
+  <ion-list *ngIf="sit == 'true'" text-wrap radio-group [(ngModel)]="stool">
+  <ion-list-header>
+    Did you produce stool?
+  </ion-list-header>
+
+  <ion-item>
+    <ion-label>Yes</ion-label>
+    <ion-radio name="yes" value="true" (ionChange)="toggleStool()"></ion-radio>
   </ion-item>
+
+  <ion-item>
+    <ion-label>No</ion-label>
+    <ion-radio name="no" checked="true" value="false" (ionChange)="toggleStool()"></ion-radio>
+  </ion-item>
+  </ion-list>
   
-  <div *ngIf="sit && stool">
+  <div *ngIf="sit == 'true' && stool == 'true'">
     <ion-item text-wrap>
       <ion-label>If so describe your bristol stool</ion-label>
     </ion-item>
@@ -66,6 +97,6 @@
   </div>
   <br/>
 
-  <button [disabled]="myDate === null" ion-button color="secondary" full (click)="submit()">Submit</button>
+  <button ion-button color="secondary" full (click)="submit()">Submit</button>
 
 </ion-content>

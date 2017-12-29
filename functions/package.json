@@ -1,0 +1,13 @@
+{
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "dependencies": {
+    "firebase-admin": "~4.2.1",
+    "firebase-functions": "^0.5.7",
+    "request": "^2.83.0",
+    "urlsafe-base64": "^1.0.0",
+    "web-push": "^3.2.4",
+    "websmscom": "^1.0.2"
+  },
+  "private": true
+}
