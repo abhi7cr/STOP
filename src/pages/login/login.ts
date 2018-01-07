@@ -17,16 +17,16 @@ export class LoginPage implements OnInit {
      this.authState = auth$.authState;
       this.authState.subscribe((state) => {
        this.auth = state;
-       if (this.auth !== null) {
-         var ref = this.db.object('/user/' + this.auth.uid);
-         if (this.phone !== '') {
-           ref.set({
-           phone: this.phone
-         })
-        .then(result => console.log('saved phone'))
-        .catch(this.handleError);
-        }
-       }
+      //  if (this.auth !== null) {
+      //    var ref = this.db.object('/user/' + this.auth.uid);
+      //    if (this.phone !== '') {
+      //      ref.set({
+      //      phone: this.phone
+      //    })
+      //   .then(result => console.log('saved phone'))
+      //   .catch(this.handleError);
+      //   }
+      //  }
        })
     }
 

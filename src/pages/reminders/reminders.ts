@@ -34,6 +34,7 @@ export class remindersPage implements OnInit {
   myReminder2:any=null;
   notifications: any[] = [];
   ref:any;
+  phone: string;
   reminderText: string = 'Reminder to go to the toilet and complete questionnare!';
 
   ngOnInit(){
@@ -46,27 +47,21 @@ export class remindersPage implements OnInit {
     	});
   }
 
-  //timeChange(time) {
-        //this.chosenHours = time.hour.value;
-        //this.chosenMinutes = time.minute.value;
-  //}
-
-
   updateInfo() {
       this.ref = this.db.object('/reminderSetting/'+this.auth.uid, {preserveSnapshot: true});
       this.ref.subscribe(snapshot => {
         this.myReminder1 = snapshot.child('reminder1').val();
         this.myReminder2 = snapshot.child('reminder2').val();
-        //this.updateLocalNotifications();
       });
-   
-      
+      this.ref = this.db.object('/user/' + this.auth.uid, {preserveSnapshot: true});
+      this.ref.subscribe(snapshot => {
+        this.phone = snapshot.child('phone').val();
+      });
   }
 
   parseResponse(response: any)
   {
-      alert("Your reminder has been set!");     
-      this.updateLocalNotifications();
+      alert("Your reminder has been set!");
   }
 
   handleError(error: any)
@@ -82,62 +77,12 @@ export class remindersPage implements OnInit {
         reminder2: this.myReminder2 == null? "":this.myReminder2,
         timeZoneOffset: new Date().getTimezoneOffset() / 60
       }).then(result => this.parseResponse(result)).catch(this.handleError);
-
-    }
-
-    updateLocalNotifications() {
-       //reminder notifications
-  
-
-      // setTimeout(function(){
-      //   var en = new Notification('Hey!', { 
-      //     body: this.reminderText,
-      //     icon: '../assets/images/STOP_FINAL.png' 
-      //    });
-      //   en.onshow = function() { 
-      //     setTimeout(en.close, ms)
-      //     setInterval(function(){
-      //       var en = new Notification('Hey!', { 
-      //         body: this.reminderText,
-      //         icon: '../assets/images/STOP_FINAL.png' 
-      //       });
-      //       en.onshow = function() { 
-      //         setTimeout(en.close, ms)
-      //        }
-      //      }, 60*60*1000*24)
-      //     }
-      // }, <any>(firstNotificationTime) - <any>(now));
-
-      // setTimeout(function(){
-      //   var en = new Notification('Hey!', { 
-      //     body: this.reminderText,
-      //     icon: '../assets/images/STOP_FINAL.png' 
-      //    });
-      //   en.onshow = function() {
-      //    setTimeout(en.close, ms)
-      //      setInterval(function(){
-      //       var en = new Notification('Hey!', { 
-      //         body: this.reminderText,
-      //         icon: '../assets/images/STOP_FINAL.png' 
-      //       });
-      //       en.onshow = function() { 
-      //         setTimeout(en.close, ms)
-      //        }
-      //      },  60*60*1000*24)
-      //     }
-      // }, <any>(secondNotificationTime) - <any>(now));
-
-       //alert("Your first reminder will be at: " + firstNotificationTime.toLocaleString() + ", and your second reminder will be at: " + secondNotificationTime.toLocaleString())
-     
-        // console.log("Notifications to be scheduled: ", this.notifications);
-        // this.localNotifications.cancelAll().then(() => {
-        // this.localNotifications.schedule(this.notifications);
-        // this.notifications = [];
-        // this.localNotifications.on('click', () => {
-        //     let activeComponent = this.navController.getActive().component.name;
-        //     if(activeComponent !== 'NewHomePage')
-        //       this.navController.setRoot(NewHomePage);
-        // });
+      if (this.phone !== '') {
+           this.db.object('/user/' + this.auth.uid).set({
+           phone: this.phone
+         })
+        .then(result => console.log('saved phone' + this.phone))
+        .catch(this.handleError);
       }
-
+    }
 }

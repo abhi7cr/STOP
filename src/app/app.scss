@@ -24,3 +24,7 @@
 @import "pages/reminders/reminders";
 @import "pages/settingEmoji/settingEmoji";
 @import "pages/thisDay/thisDay";
+
+ion-content /deep/{
+    font-family: 'PT Sans', sans-serif;
+}

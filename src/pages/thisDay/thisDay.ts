@@ -52,7 +52,7 @@ export class ThisDayPage implements OnInit {
   }
 
   viewActivity() {
-    var currentUser = this.authState.auth.uid;
+    var currentUser = this.auth.uid;
     var str1='';
     var str2=''; 
     var str3='';

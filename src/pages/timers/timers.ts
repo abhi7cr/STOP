@@ -108,6 +108,8 @@ export class TimerComponent implements AfterViewInit {
             else {
                 this.timer.hasFinished = true;
                 this.timeInSeconds = this.timeInSeconds;
+                let audio = <HTMLAudioElement>(document.getElementById('timerBuzz'))
+                audio.play();
             }
         }, 1000);
     }

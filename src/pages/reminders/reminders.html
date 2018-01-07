@@ -31,6 +31,11 @@
     <ion-datetime edited="false" displayFormat="hh:mm a" pickerFormat="hh:mm a" [(ngModel)]="myReminder2" ></ion-datetime>
   </ion-item>
 
+  <ion-item>
+            <ion-label fixed>Phone</ion-label>
+            <ion-input placeholder="number to which the reminder will be sent" type="number" [(ngModel)]="phone"></ion-input>
+  </ion-item>
+
    <ion-item *ngIf="myReminder2" text-wrap>
      <h4>tips:</h4><br>
      <h4>Second reminder is ok! Now just wait for your reminders.</h4>
